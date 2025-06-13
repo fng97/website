@@ -1,0 +1,41 @@
+:root {
+  --bg: white;
+  --fg: black;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #1e1e1e;
+    --fg: #f5f5f5;
+  }
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  max-width: 72ch;
+  margin: 0 auto;
+  padding: 1rem;
+  line-height: 1.6;
+  font-family: ui-monospace, monospace;
+  font-size: 90%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+  border-bottom: 2px solid green;
+  padding-bottom: 0.1em;
+}
+
+header,
+footer {
+  text-align: center;
+  padding: 2rem;
+}
+
+h2 + p {
+  font-size: 0.8em;
+  margin-top: -1.5em;
+  margin-bottom: 2em;
+}
