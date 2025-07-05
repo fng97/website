@@ -15,6 +15,7 @@ pandoc_args=(
   --template=template.html
   --fail-if-warnings=true
   --lua-filter=pandoc/title-from-h1.lua
+  --lua-filter=pandoc/fix-md-links.lua
 )
 
 for page in content/*.md; do
