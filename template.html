@@ -1,10 +1,10 @@
 <!doctype html>
 <html lang="en">
   <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="author" content="Francisco Nevitt Gonçalves" />
-    <title>Francisco's Blog</title>
+    <title>$pagetitle$</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
 
@@ -14,3 +14,15 @@
     </header>
 
     <main>
+      <article>
+        $if(date)$
+        <p class="date">$date$</p>
+        $endif$ $body$
+      </article>
+    </main>
+
+    <footer>
+      <p><em>fim!</em></p>
+    </footer>
+  </body>
+</html>
