@@ -13,6 +13,7 @@ pandoc_args=(
   --from=gfm
   --to=html5
   --template=template.html
+  --css=styles.css
   --fail-if-warnings=true
   --lua-filter=pandoc/title-from-h1.lua
   --lua-filter=pandoc/fix-md-links.lua
