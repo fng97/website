@@ -37,3 +37,32 @@ for page in content/*.md; do
 
   echo "Built out/${html_file}"
 done
+
+# Generate HTML blog list from generated HTML files.
+BLOG_LIST=$(
+  echo "<ul>"
+  # Match blog posts only: "YYYYMMDD-*.html".
+  for f in out/[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]-*.html; do
+    filename=$(basename "$f")
+    title=$(grep --only-matching --max-count=1 --perl-regexp '(?<=<title>).*?(?=</title>)' "$f" || \
+      echo "$filename")
+
+    # Extract the date prefix from the filename. e.g. "20250707"
+    date_part="${filename:0:8}"
+    date_fmt=$(date -d "$date_part" +%F 2>/dev/null || echo "$date_part")
+
+    # Add list entry in format "YYYY-MM-DD: Title".
+    printf '  <li><a href="%s" target="_self">%s: %s</a></li>\n' "$filename" "$date_fmt" "$title"
+  # The list of blog posts should be ordered newest to oldest.
+  done | sort -r
+  echo "</ul>"
+)
+
+# Replace the placeholder in out/index.html with the list of blog posts.
+awk -v blog_list="$BLOG_LIST" '
+  /<!-- BLOG-POSTS -->/ {
+    print blog_list
+    next
+  }
+  { print }
+' out/index.html > out/tmp.html && mv out/tmp.html out/index.html
