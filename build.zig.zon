@@ -1,0 +1,19 @@
+.{
+    .name = .franciscongdotnet,
+    .version = "0.0.0",
+    .fingerprint = 0xcbf2708a2c41405f,
+    .minimum_zig_version = "0.14.1",
+    .dependencies = .{
+        .pandoc_macos_arm64 = .{
+            .url = "https://github.com/jgm/pandoc/releases/download/3.6/pandoc-3.6-arm64-macOS.zip",
+            .hash = "N-V-__8AAEeQ3Qq3vlpO_Zfgq6NT27ms3gHoXiPgHkNVFSDI",
+            .lazy = true,
+        },
+        .pandoc_linux_amd64 = .{
+            .url = "https://github.com/jgm/pandoc/releases/download/3.6/pandoc-3.6-linux-amd64.tar.gz",
+            .hash = "N-V-__8AACYTDQm8cfzdB0IpM4TIujQZMElcO67FnQ3YxV6c",
+            .lazy = true,
+        },
+    },
+    .paths = .{"."},
+}

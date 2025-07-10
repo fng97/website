@@ -15,11 +15,12 @@
 body {
   background: var(--bg);
   color: var(--fg);
-  max-width: 72ch;
+  max-width: 80ch;
   margin: 0 auto;
   padding: 1rem;
   line-height: 1.7;
   font-family: ui-monospace, monospace;
+  font-size: 0.9em;
 }
 
 a {
@@ -38,6 +39,14 @@ footer {
 p.date {
   font-size: 0.8em;
   margin-bottom: -1.5em;
+}
+
+blockquote {
+  border-left: 4px solid #ccc;
+  padding-left: 1em;
+  margin-left: 0;
+  margin-right: 0;
+  color: #333;
 }
 
 code {

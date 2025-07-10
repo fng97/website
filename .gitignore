@@ -1,3 +1,5 @@
 .DS_Store
 out
 .direnv
+.zig-cache
+zig-out
