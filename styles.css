@@ -42,11 +42,10 @@ p.date {
 }
 
 blockquote {
-  border-left: 4px solid #ccc;
+  border-left: 1px solid var(--fg);
   padding-left: 1em;
-  margin-left: 0;
-  margin-right: 0;
-  color: #333;
+  margin-left: 1em;
+  margin-right: 1em;
 }
 
 code {
