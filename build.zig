@@ -1,8 +1,8 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
+    const host = b.graph.host.result;
     const pandoc_exe = dependency: {
-        const host = b.graph.host.result;
         // We return null here if the dependency hasn't been fetched. The build system will attempt
         // to fetch it and run this (the configure stage) again.
         const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
@@ -94,4 +94,15 @@ pub fn build(b: *std.Build) !void {
         .install_dir = .prefix,
         .install_subdir = ".",
     });
+
+    // This step is used to "hot-reload" the web page as I'm working on it. I hook this up to a nvim
+    // autocmd that runs on save.
+    const reload_step = b.step("reload", "Open (or reload) the given page in the default browser.");
+    const open_cmd = b.addSystemCommand(&.{ "open", "--background" });
+    if (b.args) |a| open_cmd.addArgs(a) else open_cmd.step.dependOn(
+        &b.addFail("'open' requires at least one argument").step,
+    );
+    if (host.os.tag != .macos) open_cmd.step.dependOn(&b.addFail("'open' is macOS-only").step);
+    open_cmd.step.dependOn(b.getInstallStep());
+    reload_step.dependOn(&open_cmd.step);
 }
