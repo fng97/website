@@ -94,7 +94,7 @@ pub fn main() !void {
 
     const index_out = try std.fs.cwd().createFile(output_path.?, .{ .truncate = true });
     defer index_out.close();
-    const index_out_writer = index_out.writer();
+    const index_out_writer = index_out.deprecatedWriter();
 
     // Write the output "index.html" file: split the input content around the placeholder comment,
     // injecting the blog post list in between.

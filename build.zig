@@ -24,8 +24,10 @@ pub fn build(b: *std.Build) !void {
     // (--output=...), and all of the blog post paths (multiple --blog-post=... arguments).
     const blog_list_builder = b.addExecutable(.{
         .name = "blog_list_builder",
-        .root_source_file = b.path("blog_list_builder.zig"),
-        .target = b.graph.host,
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("blog_list_builder.zig"),
+            .target = b.graph.host,
+        }),
     });
     const build_blog_list_step = b.addRunArtifact(blog_list_builder);
     const output_index = build_blog_list_step.addPrefixedOutputFileArg("--output=", "index.html");
