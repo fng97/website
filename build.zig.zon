@@ -1,7 +1,7 @@
 .{
-    .name = .franciscongdotnet,
+    .name = .franciscodotwiki,
     .version = "0.0.0",
-    .fingerprint = 0xcbf2708a2c41405f,
+    .fingerprint = 0x41f8cb7e354955b8,
     .minimum_zig_version = "0.14.1",
     .dependencies = .{
         .pandoc_macos_arm64 = .{
