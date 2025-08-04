@@ -105,7 +105,7 @@ pub fn main() !void {
     try index_out_writer.writeAll(index_in[placeholder_index + placeholder.len ..]);
 }
 
-// Character values increase alphabetically. I.e. 'a' > 'b'.
+// Character values increase alphabetically. I.e. 'a' < 'b'.
 fn reverse_alphabetical(_: void, lhs: []const u8, rhs: []const u8) bool {
     return std.mem.order(u8, lhs, rhs) == .gt;
 }
