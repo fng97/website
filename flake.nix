@@ -1,46 +1,55 @@
 {
-  inputs.nixpkgs.url = "github:NixOS/nixpkgs/nixos-25.05";
+  inputs = {
+    nixpkgs.url = "github:nixos/nixpkgs/nixpkgs-unstable";
+    zig-overlay.url = "github:mitchellh/zig-overlay";
+    zig-overlay.inputs.nixpkgs.follows = "nixpkgs";
+    zls-overlay.url = "github:zigtools/zls?ref=0.15.0";
+    zls-overlay.inputs.nixpkgs.follows = "nixpkgs";
+  };
 
-  outputs = { self, nixpkgs, ... }:
+  outputs =
+    {
+      self,
+      nixpkgs,
+      zig-overlay,
+      zls-overlay,
+      ...
+    }:
     let
-      supportedSystems = [ "x86_64-linux" "aarch64-darwin" ];
-      forAllSystems = nixpkgs.lib.genAttrs supportedSystems;
-      pkgsFor = nixpkgs.legacyPackages;
-
-      makePackage = system:
-        let pkgs = pkgsFor.${system};
-        in pkgs.stdenv.mkDerivation {
-          name = "website";
-          src = pkgs.lib.cleanSource ./.;
-          nativeBuildInputs = [ pkgs.zig pkgs.git ];
-          buildPhase = ''
-            mkdir -p .cache
-            zig build --global-cache-dir .cache --prefix $out
-          '';
-          installPhase = "true"; # nothing to do, already installed to prefix
+      supportedSystems = [
+        "x86_64-linux"
+        "aarch64-darwin"
+      ];
+      forSupportedSystems = nixpkgs.lib.genAttrs supportedSystems;
+      mkPkgs =
+        system:
+        import nixpkgs {
+          inherit system;
+          overlays = [
+            zig-overlay.overlays.default
+            (final: prev: {
+              zig = final.zigpkgs."0.15.1";
+              zls = zls-overlay.packages.${system}.default;
+            })
+          ];
         };
-    in {
-      packages = forAllSystems (system: { default = makePackage system; });
-
-      devShells = forAllSystems (system:
-        let pkgs = pkgsFor.${system};
-        in { default = pkgs.mkShell { buildInputs = [ pkgs.zig ]; }; });
-
-      nixosModule = { pkgs, config, lib, ... }: {
-        options.services.website.enable = lib.mkEnableOption "Enable website";
-
-        config = lib.mkIf config.services.website.enable {
-          services.caddy = {
-            enable = true;
-            virtualHosts."francisco.wiki".extraConfig = ''
-              root * ${self.packages.${pkgs.stdenv.hostPlatform.system}.default}
-              encode
-              file_server
-            '';
+    in
+    {
+      devShells = forSupportedSystems (
+        system:
+        let
+          pkgs = mkPkgs system;
+        in
+        {
+          default = pkgs.mkShell {
+            packages = with pkgs; [
+              zig
+              zls
+              pandoc
+              validator-nu
+            ];
           };
-
-          networking.firewall.allowedTCPPorts = [ 80 443 ];
-        };
-      };
+        }
+      );
     };
 }
