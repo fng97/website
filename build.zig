@@ -1,7 +1,6 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
-    const host = b.graph.host.result;
     const target = b.resolveTargetQuery(.{}); // native
     const optimize = .Debug;
 
@@ -113,61 +112,4 @@ pub fn build(b: *std.Build) !void {
     tests.step.dependOn(b.getInstallStep()); // make sure HTML installed to prefix before tests run
     const run_unit_tests = b.addRunArtifact(tests);
     test_step.dependOn(&run_unit_tests.step);
-
-    // This step is used to "hot-reload" the web page as I'm working on it. I hook this up to a nvim
-    // autocmd that runs on save.
-    const reload_step = b.step("reload", "Open (or reload) the given page in the default browser.");
-    const open_cmd = b.addSystemCommand(&.{ "open", "--background" });
-    if (b.args) |a| open_cmd.addArgs(a) else open_cmd.step.dependOn(
-        &b.addFail("'open' requires at least one argument").step,
-    );
-    if (host.os.tag != .macos) open_cmd.step.dependOn(&b.addFail("'open' is macOS-only").step);
-    open_cmd.step.dependOn(b.getInstallStep());
-    reload_step.dependOn(&open_cmd.step);
-
-    // Add step for ZLS build-on-save.
-    const module_check = b.addExecutable(.{ .name = "module_check", .root_module = module });
-    const tests_check = b.addTest(.{ .root_module = tests_module });
-    const check = b.step("check", "ZLS compilation checks");
-    check.dependOn(&module_check.step);
-    check.dependOn(&tests_check.step);
-
-    // Snapshot tests.
-    const snap_step = b.step("snap", "Compare snapshots between origin and HEAD");
-    const snap_check_clean = b.addSystemCommand(&.{ "git", "diff-files", "--quiet" });
-    const snap_clean_before = b.addSystemCommand(&.{ "rm", "-rf", "snap-before", "snap-after" });
-    snap_clean_before.step.dependOn(&snap_check_clean.step);
-    const snap_checkout_before = b.addSystemCommand(&.{
-        "git",
-        "checkout",
-        "--quiet",
-        "origin/main",
-    });
-    snap_checkout_before.step.dependOn(&snap_clean_before.step);
-    const snap_install_before = b.addSystemCommand(&.{
-        "zig",
-        "build",
-        "install",
-        "--prefix",
-        "snap-before",
-    });
-    snap_install_before.step.dependOn(&snap_checkout_before.step);
-    const snap_checkout_after = b.addSystemCommand(&.{ "git", "checkout", "--quiet", "-" });
-    snap_checkout_after.step.dependOn(&snap_install_before.step);
-    const snap_install_after = b.addSystemCommand(&.{
-        "zig",
-        "build",
-        "install",
-        "--prefix",
-        "snap-after",
-    });
-    snap_install_after.step.dependOn(&snap_checkout_after.step);
-    const snap_compare = b.addSystemCommand(&.{
-        "diff",
-        "--recursive",
-        "snap-before",
-        "snap-after",
-    });
-    snap_compare.step.dependOn(&snap_install_after.step);
-    snap_step.dependOn(&snap_compare.step);
 }
