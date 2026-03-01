@@ -1,30 +1,31 @@
 # Links
 
-A collection of my favourite resources.
+- Andrew Kelley: [Practical Data Oriented Design][ak0]
+- Arpaci-Dusseau: [Operating Systems: Three Easy Pieces][ad0]
+- Ash Vardanian: [Understanding SIMD][av0]
+- Ash Vardanian: [`less_slow.cpp`][av1]
+- Fabien Sanglard: [Driving Compilers][fs0]
+- Fabien Sanglard: [Floating Point Visually Explained][fs1]
+- Jamie Brandon: [Reflections on a decade of coding][jb0]
+- Joran Dirk Greef: [TigerStyle!][jg0]
+- Julia Evans and Kamal Marhubi: [Do you know how much your computer can do in a second?][je0]
+- Matklad: [Mechanical Habits][mk0]
+- Matthew Lugg: [Data-Oriented Design Revisited][ml0]
+- Tristan Hume: [All my favorite tracing tools][th0]
+- Will Wilson: [Testing Distributed Systems with Deterministic Simulation][ww0]
+- Will Wilson: [Testing a Single-Node, Single Threaded, Distributed System Written in 1985][ww1]
 
-[Driving Compilers](https://fabiensanglard.net/dc/index.php) by Fabien Sanglard is the definitive
-crash course on C compilers.
-[Floating Point Visually Explained](https://fabiensanglard.net/floating_point_visually_explained/index.html)
-is another favourite of mine.
-
-You have to try this: Julia Evans and Kamal Marhubi's
-[Do you know how much your computer can do in a second?](https://computers-are-fast.github.io) Very
-fun and humbling.
-
-I really enjoy [Alex Kladov](https://matklad.github.io/about.html)'s writing. Go check it out! If I
-had to choose a favourite it would be
-[Mechanical Habits](https://matklad.github.io/2025/12/06/mechanical-habits.html).
-
-[`less_slow.cpp`](https://github.com/ashvardanian/less_slow.cpp) by Ash Vardanian is a cheat sheet
-for performance engineering backed by real microbenchmarks you run yourself. I also found
-[Mastering C++ with Google Benchmark](https://ashvardanian.com/posts/google-benchmark/) and
-[Understanding SIMD](https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems)
-super useful when I was getting started.
-
-[Practical Data Oriented Design](https://youtu.be/IroPQ150F6c?si=Q7z4dclQTUdWwlGT) by Andrew Kelley
-is a must-watch.
-
-[Testing Distributed Systems with Deterministic Simulation](https://youtu.be/4fFDFbi3toc?si=QzVee30XyKRuHzER)
-by Will Wilson is the classic talk on deterministic simulation testing.
-[The sequel](https://youtu.be/m3HwXlQPCEU?si=rWKFtJOXdEk4szfh) (which features Super Mario Bros) is
-super fun too.
+[ad0]: https://pages.cs.wisc.edu/~remzi/OSTEP/
+[ak0]: https://youtu.be/IroPQ150F6c?si=Q7z4dclQTUdWwlGT
+[av0]: https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems
+[av1]: https://github.com/ashvardanian/less_slow.cpp
+[fs0]: https://fabiensanglard.net/dc/index.php
+[fs1]: https://fabiensanglard.net/floating_point_visually_explained/index.html
+[jb0]: https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding
+[je0]: https://computers-are-fast.github.io
+[jg0]: https://youtu.be/w3WYdYyjek4?si=lIkN0OUwpzm9-Fh4
+[mk0]: https://matklad.github.io/2025/12/06/mechanical-habits.html
+[ml0]: https://youtu.be/KOZcJwGdQok?si=yydbHdH2buw1L0fO
+[th0]: https://thume.ca/2023/12/02/tracing-methods/
+[ww0]: https://youtu.be/4fFDFbi3toc?si=QzVee30XyKRuHzER
+[ww1]: https://youtu.be/m3HwXlQPCEU?si=rWKFtJOXdEk4szfh
