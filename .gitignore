@@ -1,5 +1,6 @@
-.DS_Store
 .zig-cache
 zig-out
+snap-before
+snap-after
+.DS_Store
 .direnv
-result
