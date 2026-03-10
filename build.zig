@@ -35,6 +35,7 @@ pub fn build(b: *std.Build) !void {
     install_step.dependOn(step: {
         const website = b.addWriteFiles(); // output folder for website content
         _ = website.addCopyFile(b.path("styles.css"), "styles.css"); // copy in the style file
+        _ = website.addCopyFile(b.path("CNAME"), "CNAME"); // custom domain for GitHub Pages
 
         // This executable collates the list of blog posts, adds it (with links to the pages) to
         // "index.html", and generates the Atom feed. Its arguments are the Zig cache paths to:
