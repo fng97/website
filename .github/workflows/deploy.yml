@@ -1,0 +1,23 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  pages: write
+  id-token: write
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: github-pages
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download Zig, build site, and run tests
+        run: ./zig/download.sh && ./zig/zig build test
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: zig-out
+      - uses: actions/deploy-pages@v4
