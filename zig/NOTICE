@@ -1,0 +1,9 @@
+The download scripts in this directory (download.sh, download.ps1,
+download.win.ps1) are derived from TigerBeetle's Zig download scripts:
+https://github.com/tigerbeetle/tigerbeetle/tree/main/zig
+
+Original code copyright TigerBeetle, licensed under the Apache License 2.0:
+https://www.apache.org/licenses/LICENSE-2.0
+
+Modifications:
+- Changed target Zig version to 0.15.2

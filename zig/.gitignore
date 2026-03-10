@@ -1,0 +1,6 @@
+*
+!.gitignore
+!download.ps1
+!download.sh
+!download.win.ps1
+!NOTICE
