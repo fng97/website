@@ -2,7 +2,20 @@ const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
     const target = b.resolveTargetQuery(.{}); // native
-    const optimize = .Debug;
+    const optimize = .ReleaseSafe;
+
+    const pandoc_exe = pandoc_exe: {
+        const host = b.graph.host.result;
+        // We return here if the dependency hasn't been fetched. The build system will attempt to
+        // fetch it and run this (the configure stage) again.
+        const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
+            b.lazyDependency("pandoc_linux_amd64", .{}) orelse return
+        else if (host.os.tag == .macos and host.cpu.arch == .aarch64)
+            b.lazyDependency("pandoc_macos_arm64", .{}) orelse return
+        else
+            return error.PandocDependencyNotFoundForHost;
+        break :pandoc_exe dependency.path("bin/pandoc");
+    };
 
     const website = b.addWriteFiles(); // output folder for website content
     _ = website.addCopyFile(b.path("styles.css"), "styles.css"); // copy in the style file
@@ -56,7 +69,7 @@ pub fn build(b: *std.Build) !void {
 
         // Create a Pandoc step for each Markdown file to generate HTML from the Markdown.
         const pandoc_step = std.Build.Step.Run.create(b, b.fmt("pandoc: {s}", .{filename}));
-        pandoc_step.addArgs(&.{"pandoc"}); // dependency managed by Nix
+        pandoc_step.addFileArg(pandoc_exe);
         pandoc_step.addArgs(&.{
             "--from=markdown",
             "--to=html5",

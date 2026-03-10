@@ -1,6 +1,16 @@
 .{
     .name = .franciscodotwiki,
     .version = "0.0.0",
+    .dependencies = .{
+        .pandoc_macos_arm64 = .{
+            .url = "https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-arm64-macOS.zip",
+            .hash = "N-V-__8AAAksUgvP1xf_FxS69ToLXRmvuj_N5P7wpsUffUHW",
+        },
+        .pandoc_linux_amd64 = .{
+            .url = "https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-linux-amd64.tar.gz",
+            .hash = "N-V-__8AAGpVrAmUCtzcerp_CKkdxe2cgO0J2VaKCBBCC5zu",
+        },
+    },
     .fingerprint = 0x41f8cb7e354955b8,
     .minimum_zig_version = "0.15.1",
     .paths = .{"."},
