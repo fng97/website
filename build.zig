@@ -34,7 +34,7 @@ pub fn build(b: *std.Build) !void {
 
     install_step.dependOn(step: {
         const website = b.addWriteFiles(); // output folder for website content
-        _ = website.addCopyFile(b.path("styles.css"), "styles.css"); // copy in the style file
+        _ = website.addCopyFile(b.path("src/templates/styles.css"), "styles.css"); // style file
         _ = website.addCopyFile(b.path("CNAME"), "CNAME"); // custom domain for GitHub Pages
 
         // This executable collates the list of blog posts, adds it (with links to the pages) to
@@ -62,14 +62,14 @@ pub fn build(b: *std.Build) !void {
 
         // Process website content. Non-Markdown files are copied directly to the output. HTML is
         // generated from Markdown files using Pandoc.
-        var dir = try std.fs.cwd().openDir("content", .{ .iterate = true });
+        var dir = try std.fs.cwd().openDir("src/content", .{ .iterate = true });
         defer dir.close();
         var walker = try dir.walk(b.allocator);
         defer walker.deinit();
         while (try walker.next()) |entry| {
             if (entry.kind != .file) continue;
 
-            const filepath = b.path(b.pathJoin(&.{ "content", entry.path }));
+            const filepath = b.path(b.pathJoin(&.{ "src/content", entry.path }));
             const filename = entry.basename;
 
             // Copy in non-Markdown files (assets).
@@ -94,10 +94,10 @@ pub fn build(b: *std.Build) !void {
                 "--fail-if-warnings=true",
                 "--shift-heading-level-by=1", // # -> ##
             });
-            pandoc_step.addPrefixedFileArg("--template=", b.path("template.html"));
-            pandoc_step.addPrefixedFileArg("--css=", b.path("styles.css"));
-            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("pandoc/title-from-h1.lua"));
-            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("pandoc/fix-md-links.lua"));
+            pandoc_step.addPrefixedFileArg("--template=", b.path("src/templates/template.html"));
+            pandoc_step.addPrefixedFileArg("--css=", b.path("src/templates/styles.css"));
+            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/title-from-h1.lua"));
+            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/fix-md-links.lua"));
             if (is_blog_post) { // pass the publication date as metadata to Pandoc
                 const year = filename[0..4]; // YYYY
                 const month = filename[4..6]; // MM
