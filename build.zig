@@ -112,17 +112,36 @@ pub fn build(b: *std.Build) !void {
         .install_subdir = ".",
     });
 
+    const html_dir = b.getInstallPath(.prefix, "");
+
     const test_step = b.step("test", "Run tests");
     const test_options = b.addOptions();
-    test_options.addOption([]const u8, "html_dir", b.getInstallPath(.prefix, ""));
-    const tests_module = b.createModule(.{
-        .root_source_file = b.path("src/checks.zig"),
-        .target = target,
-        .optimize = optimize,
+    test_options.addOption([]const u8, "html_dir", html_dir);
+    const tests = b.addTest(.{
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/checks.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
     });
-    const tests = b.addTest(.{ .root_module = tests_module });
     tests.root_module.addOptions("config", test_options);
     tests.step.dependOn(b.getInstallStep()); // make sure HTML installed to prefix before tests run
     const run_unit_tests = b.addRunArtifact(tests);
     test_step.dependOn(&run_unit_tests.step);
+
+    const check_links_step = b.step("check_links", "Check all links in generated HTML");
+    const check_links_options = b.addOptions();
+    check_links_options.addOption([]const u8, "html_dir", html_dir);
+    const check_links_exe = b.addExecutable(.{
+        .name = "check_links",
+        .root_module = b.createModule(.{
+            .root_source_file = b.path("src/check_links.zig"),
+            .target = target,
+            .optimize = optimize,
+        }),
+    });
+    check_links_exe.root_module.addOptions("config", check_links_options);
+    const run_check_links = b.addRunArtifact(check_links_exe);
+    run_check_links.step.dependOn(b.getInstallStep());
+    check_links_step.dependOn(&run_check_links.step);
 }
