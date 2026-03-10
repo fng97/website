@@ -17,6 +17,17 @@ pub fn build(b: *std.Build) !void {
         break :pandoc_exe dependency.path("bin/pandoc");
     };
 
+    const vnu_exe = vnu_exe: {
+        const host = b.graph.host.result;
+        const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
+            b.lazyDependency("vnu_linux_amd64", .{}) orelse return
+        else if (host.os.tag == .macos and host.cpu.arch == .aarch64)
+            b.lazyDependency("vnu_macos_arm64", .{}) orelse return
+        else
+            return error.VnuDependencyNotFoundForHost;
+        break :vnu_exe dependency.path("bin/vnu");
+    };
+
     const website = b.addWriteFiles(); // output folder for website content
     _ = website.addCopyFile(b.path("styles.css"), "styles.css"); // copy in the style file
 
@@ -115,19 +126,17 @@ pub fn build(b: *std.Build) !void {
     const html_dir = b.getInstallPath(.prefix, "");
 
     const test_step = b.step("test", "Run tests");
-    const test_options = b.addOptions();
-    test_options.addOption([]const u8, "html_dir", html_dir);
-    const tests = b.addTest(.{
-        .root_module = b.createModule(.{
-            .root_source_file = b.path("src/checks.zig"),
-            .target = target,
-            .optimize = optimize,
-        }),
-    });
-    tests.root_module.addOptions("config", test_options);
-    tests.step.dependOn(b.getInstallStep()); // make sure HTML installed to prefix before tests run
-    const run_unit_tests = b.addRunArtifact(tests);
-    test_step.dependOn(&run_unit_tests.step);
+    const validate_html = std.Build.Step.Run.create(b, "vnu: validate HTML");
+    validate_html.addFileArg(vnu_exe);
+    validate_html.addArgs(&.{ "--Werror", "--filterpattern", ".*Trailing slash.*", "--skip-non-html", html_dir });
+    validate_html.step.dependOn(b.getInstallStep());
+    test_step.dependOn(&validate_html.step);
+
+    const validate_css = std.Build.Step.Run.create(b, "vnu: validate CSS");
+    validate_css.addFileArg(vnu_exe);
+    validate_css.addArgs(&.{ "--Werror", "--skip-non-css", html_dir });
+    validate_css.step.dependOn(b.getInstallStep());
+    test_step.dependOn(&validate_css.step);
 
     const check_links_step = b.step("check_links", "Check all links in generated HTML");
     const check_links_options = b.addOptions();

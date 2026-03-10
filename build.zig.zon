@@ -10,8 +10,16 @@
             .url = "https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-linux-amd64.tar.gz",
             .hash = "N-V-__8AAGpVrAmUCtzcerp_CKkdxe2cgO0J2VaKCBBCC5zu",
         },
+        .vnu_macos_arm64 = .{
+            .url = "https://github.com/validator/validator/releases/download/latest/vnu.osx.zip",
+            .hash = "N-V-__8AADWt-QS4cU0ZOjn9NDZpJ0rJkrPzr46R42_enmJ3",
+        },
+        .vnu_linux_amd64 = .{
+            .url = "https://github.com/validator/validator/releases/download/latest/vnu.linux.zip",
+            .hash = "N-V-__8AAHao-AW8dD3FpgulbE5zRGE9eWy-PVvCedE8d644",
+        },
     },
     .fingerprint = 0x41f8cb7e354955b8,
-    .minimum_zig_version = "0.15.1",
-    .paths = .{"."},
+    .minimum_zig_version = "0.15.2",
+    .paths = .{""},
 }
