@@ -1,5 +1,5 @@
 const std = @import("std");
-const html_dir = @import("config").html_dir;
+const html_dir = @import("options").html_dir;
 
 pub fn main() !void {
     var debug_allocator: std.heap.DebugAllocator(.{}) = .init;

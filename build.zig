@@ -3,7 +3,7 @@ const std = @import("std");
 pub fn build(b: *std.Build) !void {
     const install_step = b.getInstallStep(); // install the website files to the prefix
     const test_step = b.step("test", "Run tests");
-    const check_links_step = b.step("check_links", "Check all links in generated HTML");
+    const check_links_step = b.step("check-links", "Check all links in generated HTML");
 
     const target = b.resolveTargetQuery(.{}); // native
     const optimize = .ReleaseSafe;
@@ -20,7 +20,6 @@ pub fn build(b: *std.Build) !void {
             return error.PandocDependencyNotFoundForHost;
         break :pandoc_exe dependency.path("bin/pandoc");
     };
-
     const vnu_exe = vnu_exe: {
         const host = b.graph.host.result;
         const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
@@ -156,7 +155,7 @@ pub fn build(b: *std.Build) !void {
     });
 
     check_links_step.dependOn(step: {
-        const check_links_exe = b.addExecutable(.{
+        const exe = b.addExecutable(.{
             .name = "check_links",
             .root_module = b.createModule(.{
                 .root_source_file = b.path("src/check_links.zig"),
