@@ -8,6 +8,20 @@ pub fn build(b: *std.Build) !void {
     const target = b.resolveTargetQuery(.{}); // native
     const optimize = .ReleaseSafe;
 
+    const tidy_dep = b.dependency("tidy", .{
+        .target = b.graph.host,
+        .optimize = .ReleaseSafe,
+        .ignored_extensions = @as([]const []const u8, &.{
+            ".zon",
+            ".avif",
+            ".jpg",
+            ".webp",
+        }),
+        .ignored_files = @as([]const []const u8, &.{
+            "zig/download.sh",
+            "zig/download.win.ps1",
+        }),
+    });
     const pandoc_exe = pandoc_exe: {
         const host = b.graph.host.result;
         // We return here if the dependency hasn't been fetched. The build system will attempt to
@@ -154,6 +168,12 @@ pub fn build(b: *std.Build) !void {
         break :step &validate_css.step;
     });
 
+    test_step.dependOn(blk: {
+        const exe = b.addTest(.{ .name = "tidy_checks", .root_module = tidy_dep.module("tidy") });
+        const run = b.addRunArtifact(exe);
+        break :blk &run.step;
+    });
+
     check_links_step.dependOn(step: {
         const exe = b.addExecutable(.{
             .name = "check_links",
@@ -163,11 +183,11 @@ pub fn build(b: *std.Build) !void {
                 .optimize = optimize,
             }),
         });
-        const check_links_options = b.addOptions();
-        check_links_options.addOption([]const u8, "html_dir", html_dir);
-        check_links_exe.root_module.addOptions("config", check_links_options);
-        const run_check_links = b.addRunArtifact(check_links_exe);
-        run_check_links.step.dependOn(install_step);
-        break :step &run_check_links.step;
+        const options = b.addOptions();
+        options.addOption([]const u8, "html_dir", html_dir);
+        exe.root_module.addOptions("options", options);
+        const run = b.addRunArtifact(exe);
+        run.step.dependOn(install_step);
+        break :step &run.step;
     });
 }

@@ -18,6 +18,10 @@
             .url = "https://github.com/validator/validator/releases/download/latest/vnu.linux.zip",
             .hash = "N-V-__8AAHao-AW8dD3FpgulbE5zRGE9eWy-PVvCedE8d644",
         },
+        .tidy = .{
+            .url = "git+https://github.com/fng97/tidy.zig#b1ed3a3d23f7bfdb4e318eeed7e707c31def46e3",
+            .hash = "tidy-0.0.1-LZGHAXQuAAC_vBPc4rAGAngwvf4cpStmOWgEJgvMdhso",
+        },
     },
     .fingerprint = 0x41f8cb7e354955b8,
     .minimum_zig_version = "0.15.2",
