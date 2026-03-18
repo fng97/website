@@ -4,6 +4,7 @@
 - Arpaci-Dusseau: [Operating Systems: Three Easy Pieces][ad0]
 - Ash Vardanian: [Understanding SIMD][av0]
 - Ash Vardanian: [`less_slow.cpp`][av1]
+- Carl Cook: [When a Microsecond is an Eternity][cc0]
 - Fabien Sanglard: [Driving Compilers][fs0]
 - Fabien Sanglard: [Floating Point Visually Explained][fs1]
 - Jamie Brandon: [Reflections on a decade of coding][jb0]
@@ -20,6 +21,7 @@
 [ak0]: https://youtu.be/IroPQ150F6c?si=Q7z4dclQTUdWwlGT
 [av0]: https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems
 [av1]: https://github.com/ashvardanian/less_slow.cpp
+[cc0]: https://youtu.be/NH1Tta7purM?si=QUwKBcLz-OFf7Q2L
 [fs0]: https://fabiensanglard.net/dc/index.php
 [fs1]: https://fabiensanglard.net/floating_point_visually_explained/index.html
 [jb0]: https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding
