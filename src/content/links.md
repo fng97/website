@@ -9,6 +9,7 @@
 - Jamie Brandon: [Reflections on a decade of coding][jb0]
 - Joran Dirk Greef: [TigerStyle!][jg0]
 - Julia Evans and Kamal Marhubi: [Do you know how much your computer can do in a second?][je0]
+- Lalit Maganti: [Perfetto: Swiss Army Knife for Linux Client Tracing][ll0]
 - Matklad: [Mechanical Habits][mk0]
 - Matthew Lugg: [Data-Oriented Design Revisited][ml0]
 - Tristan Hume: [All my favorite tracing tools][th0]
@@ -24,6 +25,7 @@
 [jb0]: https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding
 [je0]: https://computers-are-fast.github.io
 [jg0]: https://youtu.be/w3WYdYyjek4?si=lIkN0OUwpzm9-Fh4
+[ll0]: https://lalitm.com/perfetto-swiss-army-knife/
 [mk0]: https://matklad.github.io/2025/12/06/mechanical-habits.html
 [ml0]: https://youtu.be/KOZcJwGdQok?si=yydbHdH2buw1L0fO
 [th0]: https://thume.ca/2023/12/02/tracing-methods/
