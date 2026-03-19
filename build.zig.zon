@@ -10,17 +10,17 @@
             .url = "https://github.com/jgm/pandoc/releases/download/3.9/pandoc-3.9-linux-amd64.tar.gz",
             .hash = "N-V-__8AAGpVrAmUCtzcerp_CKkdxe2cgO0J2VaKCBBCC5zu",
         },
-        .vnu_macos_arm64 = .{
-            .url = "https://github.com/validator/validator/releases/download/latest/vnu.osx.zip",
-            .hash = "N-V-__8AADWt-QS4cU0ZOjn9NDZpJ0rJkrPzr46R42_enmJ3",
-        },
-        .vnu_linux_amd64 = .{
-            .url = "https://github.com/validator/validator/releases/download/latest/vnu.linux.zip",
-            .hash = "N-V-__8AAHao-AW8dD3FpgulbE5zRGE9eWy-PVvCedE8d644",
-        },
         .tidy = .{
             .url = "git+https://github.com/fng97/tidy.zig#b1ed3a3d23f7bfdb4e318eeed7e707c31def46e3",
             .hash = "tidy-0.0.1-LZGHAXQuAAC_vBPc4rAGAngwvf4cpStmOWgEJgvMdhso",
+        },
+        .vnu_linux_amd64 = .{
+            .url = "https://github.com/fng97/website/releases/download/vnu-24.10.18/vnu.linux.zip",
+            .hash = "N-V-__8AAJi_-AUEmYXW-usAGaAfIwogZoYDc3j5iP4-_Nt0",
+        },
+        .vnu_macos_arm64 = .{
+            .url = "https://github.com/fng97/website/releases/download/vnu-24.10.18/vnu.osx.zip",
+            .hash = "N-V-__8AAFzE-QRbkoV5zGz2pl2kwZGFar93BGWkqgGsPzvb",
         },
     },
     .fingerprint = 0x41f8cb7e354955b8,
