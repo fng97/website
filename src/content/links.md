@@ -20,6 +20,7 @@
 - Tristan Hume: [All my favorite tracing tools][th0]
 - Will Wilson: [Testing Distributed Systems with Deterministic Simulation][ww0]
 - Will Wilson: [Testing a Single-Node, Single Threaded, Distributed System Written in 1985][ww1]
+- Will Wilson: [Why Testing Is Hard and How to Fix It][ww2]
 
 [ad0]: https://pages.cs.wisc.edu/~remzi/OSTEP/
 [ak0]: https://youtu.be/IroPQ150F6c?si=Q7z4dclQTUdWwlGT
@@ -40,3 +41,4 @@
 [th0]: https://thume.ca/2023/12/02/tracing-methods/
 [ww0]: https://youtu.be/4fFDFbi3toc?si=QzVee30XyKRuHzER
 [ww1]: https://youtu.be/m3HwXlQPCEU?si=rWKFtJOXdEk4szfh
+[ww2]: https://youtu.be/F_LvzcdNH3Q?si=-p2w4cyBUp_8rMJm
