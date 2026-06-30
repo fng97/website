@@ -19,7 +19,7 @@ jobs:
         with:
           # FIXME: Remove this once 0.17.0 is out. See
           # https://codeberg.org/ziglang/zig/issues/31964.
-          version: master
+          version: "0.17.0-dev.1099+7db2ef610"
       - name: "Build website and run tests" # installed to ./zig-out
         run: zig build test
       - uses: actions/upload-pages-artifact@v3

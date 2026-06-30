@@ -24,6 +24,6 @@
         },
     },
     .fingerprint = 0x41f8cb7e354955b8,
-    .minimum_zig_version = "0.16.0",
+    .minimum_zig_version = "0.17.0-dev.1099+7db2ef610",
     .paths = .{""},
 }

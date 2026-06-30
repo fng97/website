@@ -10,20 +10,6 @@ pub fn build(b: *std.Build) !void {
     const target = b.resolveTargetQuery(.{}); // native
     const optimize = .ReleaseSafe;
 
-    const tidy_dep = b.dependency("tidy", .{
-        .target = b.graph.host,
-        .optimize = optimize,
-        .ignored_extensions = @as([]const []const u8, &.{
-            ".zon",
-            ".avif",
-            ".jpg",
-            ".webp",
-        }),
-        .ignored_files = @as([]const []const u8, &.{
-            "zig/download.sh",
-            "zig/download.win.ps1",
-        }),
-    });
     const pandoc_exe = pandoc_exe: {
         const host = b.graph.host.result;
         // We return here if the dependency hasn't been fetched. The build system will attempt to
@@ -36,6 +22,7 @@ pub fn build(b: *std.Build) !void {
             return error.PandocDependencyNotFoundForHost;
         break :pandoc_exe dependency.path("bin/pandoc");
     };
+
     const vnu_exe = vnu_exe: {
         const host = b.graph.host.result;
         const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
@@ -47,8 +34,8 @@ pub fn build(b: *std.Build) !void {
         break :vnu_exe dependency.path("bin/vnu");
     };
 
+    const website = b.addWriteFiles(); // output folder for website content
     install_step.dependOn(step: {
-        const website = b.addWriteFiles(); // output folder for website content
         _ = website.addCopyFile(b.path("src/templates/styles.css"), "styles.css"); // style file
         _ = website.addCopyFile(b.path("CNAME"), "CNAME"); // custom domain for GitHub Pages
 
@@ -146,7 +133,7 @@ pub fn build(b: *std.Build) !void {
         }).step;
     });
 
-    const html_dir = b.getInstallPath(.prefix, "");
+    const html_dir = website.getDirectory();
 
     test_step.dependOn(step: {
         const validate_html = std.Build.Step.Run.create(b, "vnu: validate HTML");
@@ -156,8 +143,8 @@ pub fn build(b: *std.Build) !void {
             "--filterpattern",
             ".*Trailing slash.*",
             "--skip-non-html",
-            html_dir,
         });
+        validate_html.addDirectoryArg(html_dir);
         validate_html.step.dependOn(install_step);
         break :step &validate_html.step;
     });
@@ -165,12 +152,27 @@ pub fn build(b: *std.Build) !void {
     test_step.dependOn(step: {
         const validate_css = std.Build.Step.Run.create(b, "vnu: validate CSS");
         validate_css.addFileArg(vnu_exe);
-        validate_css.addArgs(&.{ "--Werror", "--skip-non-css", html_dir });
+        validate_css.addArgs(&.{ "--Werror", "--skip-non-css" });
+        validate_css.addDirectoryArg(html_dir);
         validate_css.step.dependOn(install_step);
         break :step &validate_css.step;
     });
 
     test_step.dependOn(blk: {
+        const tidy_dep = b.dependency("tidy", .{
+            .target = b.graph.host,
+            .optimize = optimize,
+            .ignored_extensions = @as([]const []const u8, &.{
+                ".zon",
+                ".avif",
+                ".jpg",
+                ".webp",
+            }),
+            .ignored_files = @as([]const []const u8, &.{
+                "zig/download.sh",
+                "zig/download.win.ps1",
+            }),
+        });
         const exe = b.addTest(.{ .name = "tidy_checks", .root_module = tidy_dep.module("tidy") });
         const run = b.addRunArtifact(exe);
         break :blk &run.step;
@@ -186,7 +188,8 @@ pub fn build(b: *std.Build) !void {
             }),
         });
         const options = b.addOptions();
-        options.addOption([]const u8, "html_dir", html_dir);
+        // FIXME: Currently broken. See: https://codeberg.org/ziglang/zig/issues/35489.
+        options.addOptionPath("html_dir", html_dir);
         exe.root_module.addOptions("options", options);
         const run = b.addRunArtifact(exe);
         run.step.dependOn(install_step);
