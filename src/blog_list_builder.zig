@@ -18,23 +18,19 @@ const Post = struct {
     date: []const u8,
 };
 
-pub fn main() !void {
-    var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
+pub fn main(init: std.process.Init) !void {
     // Since we're using an arena we won't bother deferring deallocations.
-    var arena = std.heap.ArenaAllocator.init(debug_allocator.allocator());
-    defer arena.deinit();
-    const arena_allocator = arena.allocator();
-
-    var args = try std.process.argsWithAllocator(arena_allocator);
+    const arena_allocator = init.arena.allocator();
+    const io = init.io;
+    const cwd = std.Io.Dir.cwd();
 
     var index_in_path: ?[]const u8 = null;
     var index_out_path: ?[]const u8 = null;
     var feed_out_path: ?[]const u8 = null;
-
-    _ = args.next(); // skip the first argument (the executable)
-
     var posts = std.array_list.Managed(Post).init(arena_allocator);
 
+    var args = init.minimal.args.iterate();
+    _ = args.next(); // skip the first argument (the executable)
     while (args.next()) |arg| {
         const index_in_path_arg_prefix = "--index-in=";
         if (std.mem.startsWith(u8, arg, index_in_path_arg_prefix)) {
@@ -65,10 +61,11 @@ pub fn main() !void {
             const link_path = arg_value[0..colon_index]; // 20250705-i-like-coffee.html
             const cache_path = arg_value[colon_index + 1 ..]; // {zig-cache-path}/stdout
 
-            const file = try std.fs.cwd().openFile(cache_path, .{});
-            defer file.close();
-            const file_stat = try file.stat();
-            const content = try file.readToEndAlloc(arena_allocator, file_stat.size);
+            const file = try cwd.openFile(io, cache_path, .{});
+            defer file.close(io);
+
+            var file_reader = file.reader(io, &.{});
+            const content = try file_reader.interface.allocRemaining(arena_allocator, .unlimited);
 
             // Find the blog post title (between <title> and </title>).
             const title_prefix = "<title>";
@@ -98,27 +95,36 @@ pub fn main() !void {
     std.mem.sort(Post, posts.items, {}, reverse_chronological);
 
     // Read the input "index.html" file.
-    const index_in = try std.fs.cwd().readFileAlloc(arena_allocator, index_in_path.?, 1024 * 1024);
+    const index_in = try cwd.readFileAlloc(
+        io,
+        index_in_path.?,
+        arena_allocator,
+        .limited(1024 * 1024),
+    );
     const placeholder = "<!-- BLOG-POSTS -->";
     const placeholder_index = std.mem.indexOf(u8, index_in, placeholder).?;
 
-    const index_out = try std.fs.cwd().createFile(index_out_path.?, .{ .truncate = true });
-    defer index_out.close();
+    const index_out = try cwd.createFile(io, index_out_path.?, .{ .truncate = true });
+    defer index_out.close(io);
+    var buffer: [16 * 1024]u8 = undefined;
+    var file_writer = index_out.writer(io, &buffer);
+    const writer: *std.Io.Writer = &file_writer.interface;
     // Write the output "index.html" file: split the input content around the placeholder comment,
     // injecting the blog post list in between.
-    try index_out.writeAll(index_in[0..placeholder_index]);
-    try index_out.writeAll("<ul>\n"); // list start
-    for (posts.items) |post| try index_out.writeAll(try std.fmt.allocPrint(
+    try writer.writeAll(index_in[0..placeholder_index]);
+    try writer.writeAll("<ul>\n"); // list start
+    for (posts.items) |post| try writer.writeAll(try std.fmt.allocPrint(
         arena_allocator,
         "<li><a href=\"{s}\" target=\"_self\">{s}: {s}</a></li>",
         .{ post.link_path, post.date, post.title },
     ));
-    try index_out.writeAll("</ul>\n"); // list end
-    try index_out.writeAll(index_in[placeholder_index + placeholder.len ..]);
+    try writer.writeAll("</ul>\n"); // list end
+    try writer.writeAll(index_in[placeholder_index + placeholder.len ..]);
+    try writer.flush();
 
-    var feed_out = try std.fs.cwd().createFile(feed_out_path.?, .{ .truncate = true });
-    defer feed_out.close();
-    try feed_out.writeAll(
+    var feed_out = try cwd.createFile(io, feed_out_path.?, .{ .truncate = true });
+    defer feed_out.close(io);
+    try feed_out.writeStreamingAll(io,
         \\<?xml version="1.0" encoding="utf-8"?>
         \\<feed xmlns="http://www.w3.org/2005/Atom">
         \\  <title>Francisco's Blog</title>
@@ -130,13 +136,13 @@ pub fn main() !void {
         \\  <id>https://francisco.wiki/</id>
     );
     // Use most recent post's publication date for feed's last-updated.
-    try feed_out.writeAll(try std.fmt.allocPrint(
+    try feed_out.writeStreamingAll(io, try std.fmt.allocPrint(
         arena_allocator,
         "  <updated>{s}T00:00:00Z</updated>\n",
         .{posts.items[0].date},
     ));
     for (posts.items) |p| {
-        try feed_out.writeAll(try std.fmt.allocPrint(
+        try feed_out.writeStreamingAll(io, try std.fmt.allocPrint(
             arena_allocator,
             \\  <entry>
             \\    <title>{s}</title>
@@ -148,7 +154,7 @@ pub fn main() !void {
             .{ p.title, p.link_path, p.link_path, p.date },
         ));
     }
-    try feed_out.writeAll("</feed>\n");
+    try feed_out.writeStreamingAll(io, "</feed>\n");
 }
 
 // To sort reverse-chronologically we can sort reverse-alphabetically because the blog list entries

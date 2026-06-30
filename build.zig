@@ -1,6 +1,8 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
+    const io = b.graph.io;
+
     const install_step = b.getInstallStep(); // install the website files to the prefix
     const test_step = b.step("test", "Run tests");
     const check_links_step = b.step("check-links", "Check all links in generated HTML");
@@ -10,7 +12,7 @@ pub fn build(b: *std.Build) !void {
 
     const tidy_dep = b.dependency("tidy", .{
         .target = b.graph.host,
-        .optimize = .ReleaseSafe,
+        .optimize = optimize,
         .ignored_extensions = @as([]const []const u8, &.{
             ".zon",
             ".avif",
@@ -75,11 +77,11 @@ pub fn build(b: *std.Build) !void {
 
         // Process website content. Non-Markdown files are copied directly to the output. HTML is
         // generated from Markdown files using Pandoc.
-        var dir = try std.fs.cwd().openDir("src/content", .{ .iterate = true });
-        defer dir.close();
+        var dir = try std.Io.Dir.cwd().openDir(io, "src/content", .{ .iterate = true });
+        defer dir.close(io);
         var walker = try dir.walk(b.allocator);
         defer walker.deinit();
-        while (try walker.next()) |entry| {
+        while (try walker.next(io)) |entry| {
             if (entry.kind != .file) continue;
 
             const filepath = b.path(b.pathJoin(&.{ "src/content", entry.path }));
@@ -118,7 +120,7 @@ pub fn build(b: *std.Build) !void {
                 pandoc_step.addArg(b.fmt("--metadata=date:{s}-{s}-{s}", .{ year, month, day }));
             }
             pandoc_step.addFileArg(filepath);
-            const generated_html_path = pandoc_step.captureStdOut();
+            const generated_html_path = pandoc_step.captureStdOut(.{});
 
             // Map "*.md" -> "*.html" (e.g. "index.md" -> "index.html").
             const html_filename = b.fmt("{s}.html", .{filename[0 .. filename.len - ".md".len]});
