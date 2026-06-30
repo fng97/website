@@ -158,25 +158,26 @@ pub fn build(b: *std.Build) !void {
         break :step &validate_css.step;
     });
 
-    test_step.dependOn(blk: {
-        const tidy_dep = b.dependency("tidy", .{
-            .target = b.graph.host,
-            .optimize = optimize,
-            .ignored_extensions = @as([]const []const u8, &.{
-                ".zon",
-                ".avif",
-                ".jpg",
-                ".webp",
-            }),
-            .ignored_files = @as([]const []const u8, &.{
-                "zig/download.sh",
-                "zig/download.win.ps1",
-            }),
-        });
-        const exe = b.addTest(.{ .name = "tidy_checks", .root_module = tidy_dep.module("tidy") });
-        const run = b.addRunArtifact(exe);
-        break :blk &run.step;
-    });
+    // FIXME: Re-enable these checks once we've bumped tidy to 0.17.0 as well.
+    // test_step.dependOn(blk: {
+    //     const tidy_dep = b.dependency("tidy", .{
+    //         .target = b.graph.host,
+    //         .optimize = optimize,
+    //         .ignored_extensions = @as([]const []const u8, &.{
+    //             ".zon",
+    //             ".avif",
+    //             ".jpg",
+    //             ".webp",
+    //         }),
+    //         .ignored_files = @as([]const []const u8, &.{
+    //             "zig/download.sh",
+    //             "zig/download.win.ps1",
+    //         }),
+    //     });
+    //     const exe = b.addTest(.{ .name = "tidy_checks", .root_module = tidy_dep.module("tidy") });
+    //     const run = b.addRunArtifact(exe);
+    //     break :blk &run.step;
+    // });
 
     check_links_step.dependOn(step: {
         const exe = b.addExecutable(.{
