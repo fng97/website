@@ -1,11 +1,14 @@
 # Links
 
-- Ally Piechowski: [The Git Commands I Run Before Reading Any Codebase][ap0]
+- Alexander Petros: [Getting off the Modernization Treadmill][aps0]
+- Ally Piechowski: [The Git Commands I Run Before Reading Any Codebase][api0]
+- Andrew Kelley: [Don't Take the Black Pill][ak1]
 - Andrew Kelley: [Practical Data Oriented Design][ak0]
 - Arpaci-Dusseau: [Operating Systems: Three Easy Pieces][ad0]
 - Ash Vardanian: [Understanding SIMD][av0]
 - Ash Vardanian: [`less_slow.cpp`][av1]
 - Carl Cook: [When a Microsecond is an Eternity][cc0]
+- Chris Burnell: [HTML Can Do That][cb0]
 - Clément Grégoire: [Spinning around: Please don't!][cg0]
 - Fabien Sanglard: [Driving Compilers][fs0]
 - Fabien Sanglard: [Floating Point Visually Explained][fs1]
@@ -24,9 +27,12 @@
 
 [ad0]: https://pages.cs.wisc.edu/~remzi/OSTEP/
 [ak0]: https://youtu.be/IroPQ150F6c?si=Q7z4dclQTUdWwlGT
-[ap0]: https://piechowski.io/post/git-commands-before-reading-code/
+[ak1]: https://youtu.be/zLZwpH5lCD4?si=sAxhHTzFAgWVB65J
+[api0]: https://piechowski.io/post/git-commands-before-reading-code/
+[aps0]: https://youtu.be/vRJVw8Di-4s?si=BeINKP2fxt73vBNX
 [av0]: https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems
 [av1]: https://github.com/ashvardanian/less_slow.cpp
+[cb0]: https://chrisburnell.com/html-can-do-that/
 [cc0]: https://youtu.be/NH1Tta7purM?si=QUwKBcLz-OFf7Q2L
 [cg0]: https://www.siliceum.com/en/blog/post/spinning-around/
 [fs0]: https://fabiensanglard.net/dc/index.php
