@@ -21,6 +21,7 @@
 - Thorsten Ball: [Professional Programming: The First 10 Years][tb0]
 - TigerBeetle: [Swarm Testing Data Structures][tb0]
 - Tristan Hume: [All my favorite tracing tools][th0]
+- Will Wilson: [Swarm Testing at Papers We Love SF March 2026][ww3]
 - Will Wilson: [Testing Distributed Systems with Deterministic Simulation][ww0]
 - Will Wilson: [Testing a Single-Node, Single Threaded, Distributed System Written in 1985][ww1]
 - Will Wilson: [Why Testing Is Hard and How to Fix It][ww2]
@@ -48,3 +49,4 @@
 [ww0]: https://youtu.be/4fFDFbi3toc?si=QzVee30XyKRuHzER
 [ww1]: https://youtu.be/m3HwXlQPCEU?si=rWKFtJOXdEk4szfh
 [ww2]: https://youtu.be/F_LvzcdNH3Q?si=-p2w4cyBUp_8rMJm
+[ww3]: https://youtu.be/wzfC7Q-xNik?si=xCSSiPew0aOPLm_-
