@@ -7,6 +7,7 @@
 - Arpaci-Dusseau: [Operating Systems: Three Easy Pieces][ad0]
 - Ash Vardanian: [Understanding SIMD][av0]
 - Ash Vardanian: [`less_slow.cpp`][av1]
+- Bryan Cantrill: [Principles of Technology Leadership][bc0]
 - Carl Cook: [When a Microsecond is an Eternity][cc0]
 - Chris Burnell: [HTML Can Do That][cb0]
 - Clément Grégoire: [Spinning around: Please don't!][cg0]
@@ -33,6 +34,7 @@
 [aps0]: https://youtu.be/vRJVw8Di-4s?si=BeINKP2fxt73vBNX
 [av0]: https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems
 [av1]: https://github.com/ashvardanian/less_slow.cpp
+[bc0]: https://youtu.be/9QMGAtxUlAc?si=yfVrBLVxV62904SY
 [cb0]: https://chrisburnell.com/html-can-do-that/
 [cc0]: https://youtu.be/NH1Tta7purM?si=QUwKBcLz-OFf7Q2L
 [cg0]: https://www.siliceum.com/en/blog/post/spinning-around/
