@@ -9,12 +9,7 @@ The site is built using the [Zig](https://ziglang.org) build system and [Pandoc]
 All dependencies are managed by the Zig build system. Build and validate with:
 
 ```plaintext
-$ ./zig/download.ps1 && ./zig/zig build test --summary all
-
-Downloading Zig 0.15.2 release build...
-Extracting zig-aarch64-macos-0.15.2.tar.xz...
-Downloading completed (/Users/fng/src/website/zig/zig)! Enjoy!
-
+$ zig build test --summary all
 Build Summary: 11/11 steps succeeded
 test success
 ├─ vnu: validate HTML success 545ms MaxRSS:338M
