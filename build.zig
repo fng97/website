@@ -8,7 +8,6 @@ pub fn build(b: *std.Build) !void {
     const check_links_step = b.step("check-links", "Check all links in generated HTML");
 
     const target = b.resolveTargetQuery(.{}); // native
-    const optimize = .ReleaseSafe;
 
     const pandoc_exe = pandoc_exe: {
         const host = b.graph.host.result;
@@ -51,7 +50,6 @@ pub fn build(b: *std.Build) !void {
                 .root_module = b.createModule(.{
                     .root_source_file = b.path("src/blog_list_builder.zig"),
                     .target = target,
-                    .optimize = optimize,
                 }),
             }),
         );
@@ -62,16 +60,20 @@ pub fn build(b: *std.Build) !void {
         _ = website.addCopyFile(updated_index, "index.html"); // copy in the final "index.html"
         _ = website.addCopyFile(atom_feed, "atom.xml"); // copy in the generated feed
 
+        // Re-run configure logic every time website content changes.
+        const content_path = b.path("src/content");
+        b.dependOnDirectory(content_path);
+
         // Process website content. Non-Markdown files are copied directly to the output. HTML is
         // generated from Markdown files using Pandoc.
-        var dir = try std.Io.Dir.cwd().openDir(io, "src/content", .{ .iterate = true });
+        var dir = try std.Io.Dir.cwd().openDir(io, content_path.getDisplayName(), .{ .iterate = true });
         defer dir.close(io);
         var walker = try dir.walk(b.allocator);
         defer walker.deinit();
         while (try walker.next(io)) |entry| {
             if (entry.kind != .file) continue;
 
-            const filepath = b.path(b.pathJoin(&.{ "src/content", entry.path }));
+            const filepath = try content_path.join(b.graph.arena, entry.path);
             const filename = entry.basename;
 
             // Copy in non-Markdown files (assets).
@@ -158,34 +160,12 @@ pub fn build(b: *std.Build) !void {
         break :step &validate_css.step;
     });
 
-    // FIXME: Re-enable these checks once we've bumped tidy to 0.17.0 as well.
-    // test_step.dependOn(blk: {
-    //     const tidy_dep = b.dependency("tidy", .{
-    //         .target = b.graph.host,
-    //         .optimize = optimize,
-    //         .ignored_extensions = @as([]const []const u8, &.{
-    //             ".zon",
-    //             ".avif",
-    //             ".jpg",
-    //             ".webp",
-    //         }),
-    //         .ignored_files = @as([]const []const u8, &.{
-    //             "zig/download.sh",
-    //             "zig/download.win.ps1",
-    //         }),
-    //     });
-    //     const exe = b.addTest(.{ .name = "tidy_checks", .root_module = tidy_dep.module("tidy") });
-    //     const run = b.addRunArtifact(exe);
-    //     break :blk &run.step;
-    // });
-
     check_links_step.dependOn(step: {
         const exe = b.addExecutable(.{
             .name = "check_links",
             .root_module = b.createModule(.{
                 .root_source_file = b.path("src/check_links.zig"),
                 .target = target,
-                .optimize = optimize,
             }),
         });
         const options = b.addOptions();

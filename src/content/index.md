@@ -8,7 +8,7 @@ title: Francisco's Blog # elsewhere inferred from the first heading
     <source srcset="index/me.webp" type="image/webp">
     <img
       src="index/me.jpg"
-      alt="My profile photo"
+      alt="me"
       style="
         width: 200px;
         height: 200px;
