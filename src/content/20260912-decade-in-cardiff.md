@@ -43,8 +43,8 @@ I'm sure this is true everywhere in the UK but Cardiff really comes alive the su
 the parks having a BBQ, enjoying the sun. Everyone's happy. There's a universal gratitude for the
 weather and you can feel it in the air. Moving to Cardiff from Lisbon was a big shock. In a year,
 Cardiff gets roughly half of the sunlight hours Lisbon gets. That said, Wales is as beautiful as it
-is _thanks to_ the the rain and long winter we have here. The colours we have the rest of the year
-make it worth it. On the best sunny days, I'd rather be in Cardiff than Lisbon.
+is _thanks to_ the rain and long winter we have here. The colours we have the rest of the year make
+it worth it. On the best sunny days, I'd rather be in Cardiff than Lisbon.
 
 ## Rest Bay
 
@@ -141,7 +141,7 @@ vegan selection.
 _The_ Cardiff lunch spot. Be prepared to queue a long time if you haven't pre-ordered. Dedicated
 veggie menu.
 
-## [Bother Thai](https://www.brotherthai.co.uk)
+## [Brother Thai](https://www.brotherthai.co.uk)
 
 My favourite dinner spot in Cardiff. Just up the road from me. Very popular. Always busy. Famous for
 their rotis: a flaky paratha filled with (in my case) jackfruit or seitan goodness.
