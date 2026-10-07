@@ -1,13 +1,13 @@
 const std = @import("std");
 
 pub fn build(b: *std.Build) !void {
+    const target = b.resolveTargetQuery(.{}); // native
+    const optimize = b.standardOptimizeOption(.{});
     const io = b.graph.io;
 
     const install_step = b.getInstallStep(); // install the website files to the prefix
     const test_step = b.step("test", "Run tests");
     const check_links_step = b.step("check-links", "Check all links in generated HTML");
-
-    const target = b.resolveTargetQuery(.{}); // native
 
     const pandoc_exe = pandoc_exe: {
         const host = b.graph.host.result;
@@ -50,6 +50,7 @@ pub fn build(b: *std.Build) !void {
                 .root_module = b.createModule(.{
                     .root_source_file = b.path("src/blog_list_builder.zig"),
                     .target = target,
+                    .optimize = optimize,
                 }),
             }),
         );
@@ -62,7 +63,7 @@ pub fn build(b: *std.Build) !void {
 
         // Re-run configure logic every time website content changes.
         const content_path = b.path("src/content");
-        b.dependOnDirectory(content_path);
+        b.dependOnDirectoryContents(content_path);
 
         // Process website content. Non-Markdown files are copied directly to the output. HTML is
         // generated from Markdown files using Pandoc.
@@ -166,11 +167,11 @@ pub fn build(b: *std.Build) !void {
             .root_module = b.createModule(.{
                 .root_source_file = b.path("src/check_links.zig"),
                 .target = target,
+                .optimize = optimize,
             }),
         });
         const options = b.addOptions();
-        // FIXME: Currently broken. See: https://codeberg.org/ziglang/zig/issues/35489.
-        options.addOptionPath("html_dir", html_dir);
+        options.addOptionPathDirectory("html_dir", html_dir);
         exe.root_module.addOptions("options", options);
         const run = b.addRunArtifact(exe);
         run.step.dependOn(install_step);
