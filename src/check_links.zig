@@ -1,25 +1,22 @@
 const std = @import("std");
 const html_dir = @import("options").html_dir;
 
-pub fn main() !void {
-    var debug_allocator: std.heap.DebugAllocator(.{}) = .init;
-    const allocator = debug_allocator.allocator();
+pub fn main(init: std.process.Init) !void {
+    const allocator = init.arena.allocator();
+    const io = init.io;
 
-    var dir = try std.fs.cwd().openDir(html_dir, .{ .iterate = true });
-    defer dir.close();
+    var dir = try std.Io.Dir.cwd().openDir(io, html_dir, .{ .iterate = true });
+    defer dir.close(io);
     var walker = try dir.walk(allocator);
 
     var http_links = std.array_list.AlignedManaged([]const u8, null).init(allocator);
 
     // Go through html_dir one HTML file at a time.
-    while (try walker.next()) |entry| switch (entry.kind) {
+    while (try walker.next(io)) |entry| switch (entry.kind) {
         .file => {
             if (!std.mem.endsWith(u8, entry.basename, ".html")) continue;
 
-            const file = try dir.openFile(entry.path, .{});
-            defer file.close();
-            const stat = try file.stat();
-            var content = try file.readToEndAlloc(allocator, stat.size);
+            const content = try dir.readFileAlloc(io, entry.path, allocator, .unlimited);
 
             // Go through HTML file one link at a time.
             const link_prefix = "href=\""; // from href="
@@ -34,6 +31,7 @@ pub fn main() !void {
                 std.debug.assert(link.len > 0);
 
                 if (std.mem.startsWith(u8, link, "mailto:")) continue;
+                if (std.mem.startsWith(u8, link, "#")) continue; // same-page anchor
 
                 const bad_links = [_][]const u8{
                     "https://youtu", // redirects and probably bot detection
@@ -42,7 +40,7 @@ pub fn main() !void {
 
                 const own_link_start = "https://francisco.wiki/";
                 if (std.mem.startsWith(u8, link, own_link_start)) {
-                    try check_relative_path(dir, link[own_link_start.len..]); // check as path
+                    try check_relative_path(io, dir, link[own_link_start.len..]); // check as path
                     continue;
                 }
 
@@ -53,7 +51,7 @@ pub fn main() !void {
                     continue;
                 }
 
-                try check_relative_path(dir, link);
+                try check_relative_path(io, dir, link);
             }
         },
         .directory => {},
@@ -62,24 +60,16 @@ pub fn main() !void {
 
     std.debug.assert(http_links.items.len > 0);
 
-    var client = std.http.Client{ .allocator = allocator };
+    var client: std.http.Client = .{ .allocator = init.gpa, .io = io };
     defer client.deinit();
+    try client.initDefaultProxies(allocator, init.environ_map);
 
-    var thread_pool: std.Thread.Pool = undefined;
-    try thread_pool.init(.{
-        .allocator = allocator,
-        .n_jobs = @min(http_links.items.len, 50), // limit concurrent connections
-    });
-    defer thread_pool.deinit();
-    var wait_group = std.Thread.WaitGroup{};
-    for (http_links.items) |url| {
-        wait_group.start();
-        try thread_pool.spawn(check_link_worker, .{ &wait_group, allocator, &client, url });
-    }
-    thread_pool.waitAndWork(&wait_group);
+    var group: std.Io.Group = .init;
+    for (http_links.items) |url| group.async(io, check_link_worker, .{ &client, url });
+    try group.await(io);
 }
 
-fn check_link(_: std.mem.Allocator, client: *std.http.Client, url: []const u8) !void {
+fn check_link(client: *std.http.Client, url: []const u8) !void {
     const uri = try std.Uri.parse(url);
     var request = try client.request(.HEAD, uri, .{
         .redirect_behavior = .not_allowed,
@@ -97,19 +87,14 @@ fn check_link(_: std.mem.Allocator, client: *std.http.Client, url: []const u8) !
     }
 }
 
-fn check_link_worker(
-    wait_group: *std.Thread.WaitGroup,
-    allocator: std.mem.Allocator,
-    client: *std.http.Client,
-    url: []const u8,
-) void {
-    defer wait_group.finish();
-    check_link(allocator, client, url) catch |e|
+fn check_link_worker(client: *std.http.Client, url: []const u8) void {
+    check_link(client, url) catch |e|
         std.debug.panic("Error: {s}. Failed to reach: '{s}'\n", .{ @errorName(e), url });
 }
 
-fn check_relative_path(dir: std.fs.Dir, path: []const u8) !void {
-    dir.access(path, .{}) catch |e| switch (e) {
+fn check_relative_path(io: std.Io, dir: std.Io.Dir, link: []const u8) !void {
+    const path = link[0 .. std.mem.indexOfScalar(u8, link, '#') orelse link.len]; // drop fragment
+    dir.access(io, path, .{}) catch |e| switch (e) {
         error.FileNotFound => {
             std.debug.print("Relative link '{s}' not in prefix\n", .{path});
             return e;
