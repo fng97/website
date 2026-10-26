@@ -113,7 +113,7 @@ around there. Great spot.
 
 ## [Corner Coffee](https://www.cornercoffee.uk)
 
-This is the best cafe in the city center. They do V60s. Had my best coffee ever here. There's also
+This is the best cafe in the city centre. They do V60s. Had my best coffee ever here. There's also
 one in Porthcawl now. Great post-surf spot!
 
 ## Pooja

@@ -33,6 +33,17 @@ pub fn build(b: *std.Build) !void {
         break :vnu_exe dependency.path("bin/vnu");
     };
 
+    const vale_exe = vale_exe: {
+        const host = b.graph.host.result;
+        const dependency = if (host.os.tag == .linux and host.cpu.arch == .x86_64)
+            b.lazyDependency("vale_linux_amd64", .{}) orelse return
+        else if (host.os.tag == .macos and host.cpu.arch == .aarch64)
+            b.lazyDependency("vale_macos_arm64", .{}) orelse return
+        else
+            return error.ValeDependencyNotFoundForHost;
+        break :vale_exe dependency.path("vale");
+    };
+
     const website = b.addWriteFiles(); // output folder for website content
     install_step.dependOn(step: {
         _ = website.addCopyFile(b.path("src/templates/styles.css"), "styles.css"); // style file
@@ -159,6 +170,30 @@ pub fn build(b: *std.Build) !void {
         validate_css.addDirectoryArg(html_dir);
         validate_css.step.dependOn(install_step);
         break :step &validate_css.step;
+    });
+
+    test_step.dependOn(step: {
+        // Vale expects its config, styles, and dictionaries in one directory tree. Since it
+        // includes the en_GB dictionary we're fetching and we don't want to copy that to the
+        // source tree, we'll assemble the config in a Zig cache path.
+        const vale_config = b.addWriteFiles();
+        const config_path = vale_config.addCopyFile(b.path("src/vale/.vale.ini"), ".vale.ini");
+        _ = vale_config.addCopyDirectory(b.path("src/vale/styles"), "styles", .{});
+        const dictionary = b.dependency("dictionary_en_gb", .{});
+        _ = vale_config.addCopyFile(
+            dictionary.path("index.aff"),
+            "styles/config/dictionaries/en_GB.aff",
+        );
+        _ = vale_config.addCopyFile(
+            dictionary.path("index.dic"),
+            "styles/config/dictionaries/en_GB.dic",
+        );
+        const run = std.Build.Step.Run.create(b, "vale: lint prose");
+        run.addFileArg(vale_exe);
+        run.addPrefixedFileArg("--config=", config_path);
+        run.addArgs(&.{ "--no-wrap", "--output=line" });
+        run.addDirectoryArg(b.path("src/content"));
+        break :step &run.step;
     });
 
     check_links_step.dependOn(step: {

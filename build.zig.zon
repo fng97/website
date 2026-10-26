@@ -18,6 +18,18 @@
             .url = "https://github.com/fng97/website/releases/download/vnu-24.10.18/vnu.osx.zip",
             .hash = "N-V-__8AAFzE-QRbkoV5zGz2pl2kwZGFar93BGWkqgGsPzvb",
         },
+        .vale_linux_amd64 = .{
+            .url = "https://github.com/vale-cli/vale/releases/download/v3.25.1/vale_3.25.1_Linux_64-bit.tar.gz",
+            .hash = "N-V-__8AAD4PVwOk23ddUeJ0AQzhWEj6ucRt_cenDF5TcByO",
+        },
+        .vale_macos_arm64 = .{
+            .url = "https://github.com/vale-cli/vale/releases/download/v3.25.1/vale_3.25.1_macOS_arm64.tar.gz",
+            .hash = "N-V-__8AAMDATQMOcqeaIdhKl5UYT5K3Ln_zDTVSifyS4GZU",
+        },
+        .dictionary_en_gb = .{
+            .url = "https://registry.npmjs.org/dictionary-en-gb/-/dictionary-en-gb-3.0.0.tgz",
+            .hash = "N-V-__8AAG_JCACa-j01hLVKyht70xV3rQpurfhdIuSA1VlJ",
+        },
     },
     .fingerprint = 0x41f8cb7e354955b8,
     .minimum_zig_version = "0.17.0",
