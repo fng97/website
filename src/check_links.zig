@@ -64,12 +64,25 @@ pub fn main(init: std.process.Init) !void {
     defer client.deinit();
     try client.initDefaultProxies(allocator, init.environ_map);
 
+    // Each worker reports its failure (if any) in its own slot so we can list every broken link
+    // rather than stopping at the first.
+    const failures = try allocator.alloc(?[]const u8, http_links.items.len);
+    @memset(failures, null);
+
     var group: std.Io.Group = .init;
-    for (http_links.items) |url| group.async(io, check_link_worker, .{ &client, url });
+    for (http_links.items, failures) |url, *failure|
+        group.async(io, check_link_worker, .{ allocator, &client, url, failure });
     try group.await(io);
+
+    var failed = false;
+    for (failures) |failure| if (failure) |message| {
+        std.debug.print("{s}\n", .{message});
+        failed = true;
+    };
+    if (failed) return error.LinksNotReachable;
 }
 
-fn check_link(client: *std.http.Client, url: []const u8) !void {
+fn check_link(client: *std.http.Client, url: []const u8) !std.http.Status {
     const uri = try std.Uri.parse(url);
     var request = try client.request(.HEAD, uri, .{
         .redirect_behavior = .not_allowed,
@@ -79,17 +92,27 @@ fn check_link(client: *std.http.Client, url: []const u8) !void {
     try request.sendBodiless();
 
     const response = try request.receiveHead(&.{});
-    const status = response.head.status;
-
-    if (status != std.http.Status.ok) {
-        std.debug.print("HEAD request to '{s}' returned {d}\n", .{ url, status });
-        return error.LinkNotOk;
-    }
+    return response.head.status;
 }
 
-fn check_link_worker(client: *std.http.Client, url: []const u8) void {
-    check_link(client, url) catch |e|
-        std.debug.panic("Error: {s}. Failed to reach: '{s}'\n", .{ @errorName(e), url });
+/// Sets `failure` to a message saying why `url` couldn't be reached, if it couldn't.
+fn check_link_worker(
+    allocator: std.mem.Allocator,
+    client: *std.http.Client,
+    url: []const u8,
+    failure: *?[]const u8,
+) void {
+    const status = check_link(client, url) catch |e| {
+        failure.* = std.fmt.allocPrint(allocator, "'{s}': {s}", .{ url, @errorName(e) }) catch
+            @panic("OOM");
+        return;
+    };
+    if (status != .ok) {
+        failure.* = std.fmt.allocPrint(allocator, "'{s}': HEAD request returned {d}", .{
+            url,
+            @backingInt(status),
+        }) catch @panic("OOM");
+    }
 }
 
 fn check_relative_path(io: std.Io, dir: std.Io.Dir, link: []const u8) !void {
