@@ -1,0 +1,94 @@
+.{
+    .name = "Instant pot bean soup with pearl barley",
+    .source = "https://kitchenconfidante.com/instant-pot-bean-soup-with-pearl-barley",
+    .servings = 6,
+    .prep_time = 20,
+    .cook_time = 25,
+    .ingredients = .{
+        .{
+            .ingredient = "olive oil",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "garlic cloves",
+            .amount = .{ .quantity = 3 },
+            .note = "minced",
+        },
+        .{
+            .ingredient = "carrots",
+            .amount = .{ .quantity = 3 },
+            .note = "diced",
+        },
+        .{
+            .ingredient = "celery stalks",
+            .amount = .{ .quantity = 3 },
+            .note = "diced",
+        },
+        .{
+            .ingredient = "mushrooms",
+            .amount = .{ .quantity = 200, .unit = .g },
+            .note = "sliced",
+        },
+        .{
+            .ingredient = "onion",
+            .amount = .{ .quantity = 1 },
+            .note = "diced",
+        },
+        .{
+            .ingredient = "bay leaf",
+            .amount = .{ .quantity = 2 },
+        },
+        .{
+            .ingredient = "pearl barley",
+            .amount = .{ .quantity = 300, .unit = .g },
+        },
+        .{
+            .ingredient = "herbes de provence",
+            .amount = .{ .quantity = 2, .unit = .tsp },
+            .note = "e.g. thyme, rosemary, basil, parsley, oregano",
+        },
+        .{
+            .ingredient = "broth",
+            .amount = .{ .quantity = 2, .unit = .L },
+            .note = "low sodium",
+        },
+        .{
+            .ingredient = "white beans",
+            .amount = .{ .quantity = 1, .unit = .tin },
+            .note = "e.g. cannellini, butter",
+        },
+        .{
+            .ingredient = "salt",
+            .amount = .{ .quantity = 1.5, .unit = .tsp },
+        },
+        .{
+            .ingredient = "baby spinach",
+            .amount = .{ .quantity = 200, .unit = .g },
+            .note =
+            \\You can substitute heartier greens like kale but make sure to pressure cook them
+            \\instead of adding them after.
+            ,
+        },
+        .{
+            .ingredient = "apple cider vinegar",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+        },
+    },
+    .instructions = .{
+        \\Heat the oil in the Instant Pot on the saute function. Add the garlic, celery,
+        \\carrots, mushrooms, and onion. Cook for about 3 minutes, or until the onions are
+        \\translucent.
+        ,
+        \\Stir in the bay leaf, pearl barley, and Herbes de Provence, and stir until the barley is
+        \\well coated. Stir in the broth, beans, salt, and pepper. Don't forget your
+        \\hearty leafy green if substituting for spinach.
+        ,
+        \\Lock in the Instant Pot/pressure cooker lid. Pressure cook on high for 15 minutes.
+        ,
+        \\Drop in the spinach and adjust the seasoning with salt and pepper. Let it bubble for
+        \\about 2 minutes to wilt the spinach, and stir in the vinegar.
+        ,
+        \\Serve hot with crusty bread, and enjoy!
+        ,
+    },
+}

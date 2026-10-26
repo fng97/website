@@ -85,3 +85,21 @@ code span {
   display: inline !important;
   font-weight: normal !important;
 }
+
+.ingredients input {
+  accent-color: green;
+}
+
+.ingredients ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+.ingredients label {
+  cursor: pointer;
+}
+
+.ingredients input:checked + span {
+  text-decoration: line-through;
+  opacity: 0.6;
+}

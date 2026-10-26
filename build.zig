@@ -72,6 +72,22 @@ pub fn build(b: *std.Build) !void {
         _ = website.addCopyFile(updated_index, "index.html"); // copy in the final "index.html"
         _ = website.addCopyFile(atom_feed, "atom.xml"); // copy in the generated feed
 
+        // This executable converts a recipe ZON file to Markdown for Pandoc.
+        const recipe_to_markdown = b.addExecutable(.{
+            .name = "recipe_to_markdown",
+            .root_module = b.createModule(.{
+                .root_source_file = b.path("src/recipe_to_markdown.zig"),
+                .target = target,
+                .optimize = optimize,
+            }),
+        });
+
+        // The recipe index lists every recipe. Each recipe's path is added to this run as it's
+        // found below.
+        const recipe_index_run = b.addRunArtifact(recipe_to_markdown);
+        recipe_index_run.addArg("--index");
+        const recipe_index_markdown = recipe_index_run.addOutputFileArg("index.md");
+
         // Re-run configure logic every time website content changes.
         const content_path = b.path("src/content");
         b.dependOnDirectoryContents(content_path);
@@ -88,6 +104,27 @@ pub fn build(b: *std.Build) !void {
             const filepath = try content_path.join(b.graph.arena, entry.path);
             const filename = entry.basename;
 
+            // Generate a page for each recipe. Recipes are ZON files in the "recipes" folder (e.g.
+            // "recipes/dal.zon" -> "recipes/dal.html").
+            if (std.mem.eql(u8, std.fs.path.dirname(entry.path) orelse "", "recipes") and
+                std.mem.endsWith(u8, filename, ".zon"))
+            {
+                const recipe_run = b.addRunArtifact(recipe_to_markdown);
+                recipe_run.addFileArg(filepath);
+                const stem = filename[0 .. filename.len - ".zon".len];
+                const markdown = recipe_run.addOutputFileArg(b.fmt("{s}.md", .{stem}));
+
+                const pandoc_run = pandoc_step(b, pandoc_exe, filename);
+                // The template's links (e.g. to the styles) are relative to the page, so recipe
+                // pages need to go up a level to the site root.
+                pandoc_run.addArg("--variable=root:../");
+                pandoc_run.addFileArg(markdown);
+                const html = pandoc_run.captureStdOut(.{});
+                _ = website.addCopyFile(html, b.fmt("recipes/{s}.html", .{stem}));
+                recipe_index_run.addFileArg(filepath);
+                continue;
+            }
+
             // Copy in non-Markdown files (assets).
             if (!std.mem.endsWith(u8, entry.basename, ".md")) {
                 _ = website.addCopyFile(filepath, entry.path); // preserve file structure
@@ -102,26 +139,15 @@ pub fn build(b: *std.Build) !void {
             };
 
             // Create a Pandoc step for each Markdown file to generate HTML from the Markdown.
-            const pandoc_step = std.Build.Step.Run.create(b, b.fmt("pandoc: {s}", .{filename}));
-            pandoc_step.addFileArg(pandoc_exe);
-            pandoc_step.addArgs(&.{
-                "--from=markdown",
-                "--to=html5",
-                "--fail-if-warnings=true",
-                "--shift-heading-level-by=1", // # -> ##
-            });
-            pandoc_step.addPrefixedFileArg("--template=", b.path("src/templates/template.html"));
-            pandoc_step.addPrefixedFileArg("--css=", b.path("src/templates/styles.css"));
-            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/title-from-h1.lua"));
-            pandoc_step.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/fix-md-links.lua"));
+            const pandoc_run = pandoc_step(b, pandoc_exe, filename);
             if (is_blog_post) { // pass the publication date as metadata to Pandoc
                 const year = filename[0..4]; // YYYY
                 const month = filename[4..6]; // MM
                 const day = filename[6..8]; // DD
-                pandoc_step.addArg(b.fmt("--metadata=date:{s}-{s}-{s}", .{ year, month, day }));
+                pandoc_run.addArg(b.fmt("--metadata=date:{s}-{s}-{s}", .{ year, month, day }));
             }
-            pandoc_step.addFileArg(filepath);
-            const generated_html_path = pandoc_step.captureStdOut(.{});
+            pandoc_run.addFileArg(filepath);
+            const generated_html_path = pandoc_run.captureStdOut(.{});
 
             // Map "*.md" -> "*.html" (e.g. "index.md" -> "index.html").
             const html_filename = b.fmt("{s}.html", .{filename[0 .. filename.len - ".md".len]});
@@ -139,6 +165,12 @@ pub fn build(b: *std.Build) !void {
 
             _ = website.addCopyFile(generated_html_path, html_filename); // copy in generated HTML
         }
+
+        const recipe_index_pandoc_run = pandoc_step(b, pandoc_exe, "recipes/index.md");
+        recipe_index_pandoc_run.addArg("--variable=root:../");
+        recipe_index_pandoc_run.addFileArg(recipe_index_markdown);
+        const recipe_index_html = recipe_index_pandoc_run.captureStdOut(.{});
+        _ = website.addCopyFile(recipe_index_html, "recipes/index.html");
 
         break :step &b.addInstallDirectory(.{
             .source_dir = website.getDirectory(),
@@ -212,4 +244,22 @@ pub fn build(b: *std.Build) !void {
         run.step.dependOn(install_step);
         break :step &run.step;
     });
+}
+
+/// Creates a Pandoc step with the arguments common to all pages. Callers add the input file, then
+/// capture the generated HTML from stdout.
+fn pandoc_step(b: *std.Build, pandoc_exe: std.Build.LazyPath, name: []const u8) *std.Build.Step.Run {
+    const run = std.Build.Step.Run.create(b, b.fmt("pandoc: {s}", .{name}));
+    run.addFileArg(pandoc_exe);
+    run.addArgs(&.{
+        "--from=markdown",
+        "--to=html5",
+        "--fail-if-warnings=true",
+        "--shift-heading-level-by=1", // # -> ##
+    });
+    run.addPrefixedFileArg("--template=", b.path("src/templates/template.html"));
+    run.addPrefixedFileArg("--css=", b.path("src/templates/styles.css"));
+    run.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/title-from-h1.lua"));
+    run.addPrefixedFileArg("--lua-filter=", b.path("src/pandoc/fix-md-links.lua"));
+    return run;
 }

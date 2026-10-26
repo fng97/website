@@ -1,0 +1,93 @@
+.{
+    .name = "Green Moong Dal",
+    .source = "https://pipingpotcurry.com/green-moong-dal-pressure-cooker",
+    .servings = 8,
+    .prep_time = 10,
+    .cook_time = 25,
+    .ingredients = .{
+        .{
+            .ingredient = "green moong lentils",
+            .amount = .{ .quantity = 400, .unit = .g },
+            .note = "rinsed",
+        },
+        .{
+            .ingredient = "oil",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "ginger finger",
+            .amount = .{ .quantity = 1 },
+            .note = "minced",
+        },
+        .{
+            .ingredient = "garlic clove",
+            .amount = .{ .quantity = 2 },
+            .note = "minced",
+        },
+        .{
+            .ingredient = "onion",
+            .amount = .{ .quantity = 1 },
+            .note = "diced",
+        },
+        .{
+            .ingredient = "tomato",
+            .amount = .{ .quantity = 1, .unit = .tin },
+            .note = "chopped",
+        },
+        .{
+            .ingredient = "stock",
+            .amount = .{ .quantity = 1.4, .unit = .L },
+        },
+        .{
+            .ingredient = "lime juice",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "cilantro",
+            .note = "to garnish",
+        },
+        .{
+            .ingredient = "cumin",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+        },
+        .{
+            .ingredient = "ground turmeric",
+            .amount = .{ .quantity = 0.5, .unit = .tsp },
+        },
+        .{
+            .ingredient = "coriander powder",
+            .amount = .{ .quantity = 2, .unit = .tsp },
+        },
+        .{
+            .ingredient = "red chili powder",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+        },
+        .{
+            .ingredient = "garam masala",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+        },
+        .{
+            .ingredient = "salt",
+            .amount = .{ .quantity = 2, .unit = .tsp },
+        },
+    },
+    .instructions = .{
+        \\Start the instant pot in SAUTE mode and heat oil in it.
+        ,
+        \\Add onions, ginger and garlic. Saute for 3 minutes.
+        ,
+        \\Stir in spices.
+        ,
+        \\Add lentils and water. Stir well.
+        ,
+        \\Gently add chopped tomato on top (prevent BURN notice). Press CANCEL and close the
+        \\instant pot lid with vent in sealing position.
+        ,
+        \\Press MANUAL or Pressure Cook mode for 15 minutes. When the instant pot beeps, let the
+        \\pressure release naturally (NPR).
+        ,
+        \\Open the lid and add lime juice and cilantro. Stir and green moong dal is ready to be
+        \\served.
+        ,
+    },
+}
