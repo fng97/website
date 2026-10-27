@@ -15,12 +15,12 @@
             .amount = .{ .quantity = 2, .unit = .tbsp },
         },
         .{
-            .ingredient = "ginger finger",
+            .ingredient = "finger of ginger",
             .amount = .{ .quantity = 1 },
-            .note = "minced",
+            .note = "minced, aim for about the same amount as the garlic",
         },
         .{
-            .ingredient = "garlic clove",
+            .ingredient = "cloves of garlic",
             .amount = .{ .quantity = 2 },
             .note = "minced",
         },
