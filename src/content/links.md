@@ -12,6 +12,7 @@
 - Chris Burnell: [HTML Can Do That][cb0]
 - Cl&eacute;ment Gr&eacute;goire: [Spinning around: Please don't!][cg0]
 - David &Aacute;lvarez Rosa: [Optimizing a Spin-Lock][dar0]
+- David &Aacute;lvarez Rosa: [Tuning a Server for Benchmarking][dar1]
 - Fabien Sanglard: [Driving Compilers][fs0]
 - Fabien Sanglard: [Floating Point Visually Explained][fs1]
 - Jamie Brandon: [Reflections on a decade of coding][jb0]
@@ -42,6 +43,7 @@
 [cc0]: https://youtu.be/NH1Tta7purM?si=QUwKBcLz-OFf7Q2L
 [cg0]: https://www.siliceum.com/en/blog/post/spinning-around/
 [dar0]: https://david.alvarezrosa.com/posts/optimizing-a-spin-lock/
+[dar1]: https://david.alvarezrosa.com/posts/tuning-a-server-for-benchmarking/
 [fs0]: https://fabiensanglard.net/dc/index.php
 [fs1]: https://fabiensanglard.net/floating_point_visually_explained/index.html
 [jb0]: https://www.scattered-thoughts.net/writing/reflections-on-a-decade-of-coding
