@@ -1,0 +1,133 @@
+.{
+    .name = "Leek and Potato Soup",
+    .source = "https://rainbowplantlife.com/creamy-vegan-potato-leek-soup/",
+    .servings = 6,
+    .prep_time = 20,
+    .cook_time = 35,
+    .ingredients = .{
+        .{
+            .ingredient = "large leeks",
+            .amount = .{ .quantity = 4 },
+            .note = "roots and dark green tops removed, thinly sliced",
+        },
+        .{
+            .ingredient = "bay leaves",
+            .amount = .{ .quantity = 3 },
+        },
+        .{
+            .ingredient = "large sprigs of fresh sage",
+            .amount = .{ .quantity = 3 },
+            .note = "or rosemary",
+        },
+        .{
+            .ingredient = "fresh thyme",
+            .amount = .{ .quantity = 10, .unit = .g },
+            .note = "15 to 18 sprigs",
+        },
+        .{
+            .ingredient = "extra virgin olive oil",
+            .amount = .{ .quantity = 3, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "kosher salt",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+            .note = "plus a few pinches for the leeks, and more to taste",
+        },
+        .{
+            .ingredient = "black pepper",
+            .note = "freshly cracked, to taste",
+        },
+        .{
+            .ingredient = "potatoes",
+            .amount = .{ .quantity = 500, .unit = .g },
+            .note = "about 4 to 5 medium, peeled and diced",
+        },
+        .{
+            .ingredient = "cloves of garlic",
+            .amount = .{ .quantity = 4 },
+            .note = "finely chopped",
+        },
+        .{
+            .ingredient = "red pepper flakes",
+            .amount = .{ .quantity = 0.5, .unit = .tsp },
+            .note = "optional",
+        },
+        .{
+            .ingredient = "vegetable broth",
+            .amount = .{ .quantity = 1.5, .unit = .L },
+            .note = "good quality",
+        },
+        .{
+            .ingredient = "cannellini beans",
+            .amount = .{ .quantity = 3, .unit = .tin },
+            .note = "drained and rinsed",
+        },
+        .{
+            .ingredient = "baby spinach",
+            .amount = .{ .quantity = 125, .unit = .g },
+            .note = "optional, chopped",
+        },
+        .{
+            .ingredient = "flat-leaf parsley for herby oil",
+            .amount = .{ .quantity = 30, .unit = .g },
+            .note = "leaves only",
+        },
+        .{
+            .ingredient = "medium lemons for herby oil",
+            .amount = .{ .quantity = 3 },
+            .note = "organic, zest only, use 2 if you prefer it less lemony",
+        },
+        .{
+            .ingredient = "cloves of garlic for herby oil",
+            .amount = .{ .quantity = 1 },
+            .note = "grated or minced",
+        },
+        .{
+            .ingredient = "flaky sea salt",
+            .amount = .{ .quantity = 1, .unit = .tsp },
+        },
+        .{
+            .ingredient = "extra virgin olive oil for herby oil",
+            .amount = .{ .quantity = 80, .unit = .g },
+        },
+    },
+    .instructions = .{
+        \\Prep the leeks. Trim off the roots and dark green tops, then slice the rest thinly. Swish
+        \\the slices around in a bowl of cold water to loosen the grit. Scoop them out onto a clean
+        \\towel and pat dry. Don't tip them into a colander or the grit will settle back onto them.
+        ,
+        \\Make the bouquet garni. Tie the bay leaves, sage and thyme tightly together with kitchen
+        \\twine. If you don't have any, leave the sprigs loose and fish them out with tongs before
+        \\blending.
+        ,
+        \\Heat the olive oil in a large pot (at least 5 L) over medium-high heat. When it shimmers,
+        \\add the leeks and a few pinches of salt. Cook, stirring occasionally, for 7 to 9 minutes
+        \\until soft and starting to brown. Meanwhile, rinse, peel and dice the potatoes.
+        ,
+        \\Stir in the garlic and red pepper flakes and cook for 1 to 2 minutes, stirring often. Add
+        \\a splash of broth if needed and scrape up any browned bits. Add the rest of the broth, the
+        \\bouquet garni, 1 tsp kosher salt, pepper, potatoes and beans. Stir well.
+        ,
+        \\Bring to a boil, then turn down to medium-low, cover and simmer for 20 to 25 minutes,
+        \\until the potatoes are tender. Uncover and stir a few times.
+        ,
+        \\While the soup simmers, make the herby oil. Finely chop the parsley. Zest the lemons over
+        \\the herbs and grate in the garlic. Transfer to a jar, then stir in the flaky salt and
+        \\olive oil. Taste and add more salt if needed.
+        ,
+        \\Fish out and discard the bouquet garni. Blend about half of the soup (roughly 4 1/2 to 5
+        \\cups / 1.1 to 1.2 L).
+        \\
+        \\Stand blender: Blend the half in two batches if it doesn't fit. Swap the lid cap for a
+        \\dish towel so steam can escape. Blend until thick and smooth, then return it to the pot
+        \\and stir.
+        \\
+        \\Immersion blender: Blend about half the soup directly in the pot, leaving some texture.
+        ,
+        \\Stir in the spinach and simmer for 2 minutes until wilted. Season to taste with salt and
+        \\pepper.
+        ,
+        \\Ladle into bowls and spoon the herby oil over each serving.
+        ,
+    },
+}
