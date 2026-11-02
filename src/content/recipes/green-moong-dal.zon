@@ -1,6 +1,6 @@
 .{
     .name = "Green Moong Dal",
-    .source = "https://pipingpotcurry.com/green-moong-dal-pressure-cooker",
+    .source = "https://pipingpotcurry.com/green-moong-dal-pressure-cooker/",
     .servings = 8,
     .prep_time = 10,
     .cook_time = 25,

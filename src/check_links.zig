@@ -51,7 +51,9 @@ pub fn main(init: std.process.Init) !void {
                     continue;
                 }
 
-                try check_relative_path(io, dir, link);
+                // Relative links resolve from the directory of the page they're in.
+                const page_dir = std.fs.path.dirname(entry.path) orelse "";
+                try check_relative_path(io, dir, try std.fs.path.join(allocator, &.{ page_dir, link }));
             }
         },
         .directory => {},
