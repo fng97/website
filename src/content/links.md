@@ -8,6 +8,7 @@
 - Ash Vardanian: [Understanding SIMD][av0]
 - Ash Vardanian: [`less_slow.cpp`][av1]
 - Bryan Cantrill: [Principles of Technology Leadership][bc0]
+- Bryan Cantrill: [Social Audio as a Vector for Engineering Wisdom][bc1]
 - Carl Cook: [When a Microsecond is an Eternity][cc0]
 - Chris Burnell: [HTML Can Do That][cb0]
 - Cl&eacute;ment Gr&eacute;goire: [Spinning around: Please don't!][cg0]
@@ -39,6 +40,7 @@
 [av0]: https://www.modular.com/blog/understanding-simd-infinite-complexity-of-trivial-problems
 [av1]: https://github.com/ashvardanian/less_slow.cpp
 [bc0]: https://youtu.be/9QMGAtxUlAc?si=yfVrBLVxV62904SY
+[bc1]: https://youtu.be/W8qiDhlFVCE?si=u2AIHu-L9DF3PL6b
 [cb0]: https://chrisburnell.com/html-can-do-that/
 [cc0]: https://youtu.be/NH1Tta7purM?si=QUwKBcLz-OFf7Q2L
 [cg0]: https://www.siliceum.com/en/blog/post/spinning-around/
