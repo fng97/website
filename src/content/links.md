@@ -17,6 +17,7 @@
 - Fabien Sanglard: [Driving Compilers][fs0]
 - Fabien Sanglard: [Floating Point Visually Explained][fs1]
 - Jamie Brandon: [Reflections on a decade of coding][jb0]
+- Jeff Pele: [Real-time Software On Linux: How Hard Can It Be?][jp0]
 - Joran Dirk Greef: [Mission-Critical][jg1]
 - Joran Dirk Greef: [TigerStyle!][jg0]
 - Julia Evans and Kamal Marhubi: [Do you know how much your computer can do in a second?][je0]
@@ -53,6 +54,7 @@
 [je0]: https://computers-are-fast.github.io
 [jg0]: https://youtu.be/w3WYdYyjek4?si=lIkN0OUwpzm9-Fh4
 [jg1]: https://youtu.be/1WczY6Mp8vU?si=1rYtiGb5TKMIAPhN
+[jp0]: https://youtu.be/-0D0rFdU6HY?si=YMPRxrA0vd0ytOdL
 [ll0]: https://lalitm.com/perfetto-swiss-army-knife/
 [mk0]: https://matklad.github.io/2025/12/06/mechanical-habits.html
 [mk1]: https://matklad.github.io/2026/09/19/finding-bugs.html
