@@ -26,6 +26,7 @@
 - Matthew Lugg: [Data-Oriented Design Revisited][ml0]
 - Thorsten Ball: [Professional Programming: The First 10 Years][tb0]
 - TigerBeetle: [Swarm Testing Data Structures][tb0]
+- TigerBeetle: [The Fastest Object Storage Client in the World][tb1]
 - Tristan Hume: [All my favorite tracing tools][th0]
 - Will Wilson: [Swarm Testing at Papers We Love SF March 2026][ww3]
 - Will Wilson: [Testing Distributed Systems with Deterministic Simulation][ww0]
@@ -57,6 +58,7 @@
 [mk1]: https://matklad.github.io/2026/09/19/finding-bugs.html
 [ml0]: https://youtu.be/KOZcJwGdQok?si=yydbHdH2buw1L0fO
 [tb0]: https://tigerbeetle.com/blog/2025-04-23-swarm-testing-data-structures/
+[tb1]: https://youtu.be/NJrqmoNpVGg?si=TbOwQzKtgnhRb-5E
 [th0]: https://thume.ca/2023/12/02/tracing-methods/
 [ww0]: https://youtu.be/4fFDFbi3toc?si=QzVee30XyKRuHzER
 [ww1]: https://youtu.be/m3HwXlQPCEU?si=rWKFtJOXdEk4szfh
