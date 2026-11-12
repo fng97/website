@@ -14,13 +14,13 @@ jobs:
     runs-on: ubuntu-latest
     environment: github-pages
     steps:
-      - uses: actions/checkout@v4
-      - uses: mlugg/setup-zig@v2
+      - uses: actions/checkout@v4.4.0
+      - uses: mlugg/setup-zig@v2.2.1
         with:
           version: "0.17.0"
       - name: "Build website and run tests" # installed to ./zig-out
         run: zig build test
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/upload-pages-artifact@v3.0.1
         with:
           path: zig-out
-      - uses: actions/deploy-pages@v4
+      - uses: actions/deploy-pages@v4.0.5
