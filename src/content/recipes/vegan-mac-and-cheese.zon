@@ -1,5 +1,5 @@
 .{
-    .name = "Mind-Blowing Vegan Mac and Cheese",
+    .name = "Vegan Mac and Cheese",
     .source = "https://rainbowplantlife.com/crispy-baked-vegan-mac-and-cheese/",
     .servings = 8,
     .prep_time = 20,

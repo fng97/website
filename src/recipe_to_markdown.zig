@@ -124,7 +124,12 @@ pub fn main(init: std.process.Init) !void {
         recipe.cook_time,
         recipe.prep_time + recipe.cook_time,
     });
-    try w.print("Original recipe: <{s}>\n\n", .{recipe.source});
+    const is_link = std.mem.startsWith(u8, recipe.source, "http");
+    try w.print("Original recipe: {s}{s}{s}\n\n", .{
+        if (is_link) "<" else "",
+        recipe.source,
+        if (is_link) ">" else "",
+    });
 
     // Each ingredient is a checkbox so that it can be ticked off while cooking. The label makes the
     // whole line clickable, and the span lets the CSS strike through just the text (not the space

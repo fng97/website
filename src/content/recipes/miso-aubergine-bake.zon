@@ -1,0 +1,98 @@
+.{
+    .name = "Roasted Miso-Sesame Aubergines and Tofu",
+    .source = "The Green Roasting Tin by Rukmini Iyer",
+    .servings = 4,
+    .prep_time = 10,
+    .cook_time = 45,
+    .ingredients = .{
+        .{
+            .ingredient = "aubergines",
+            .amount = .{ .quantity = 2 },
+            .note = "halved lengthways",
+        },
+        .{
+            .ingredient = "firm organic tofu",
+            .amount = .{ .quantity = 250, .unit = .g },
+            .note = "cut into 1.5cm slices",
+        },
+        .{
+            .ingredient = "miso paste",
+            .amount = .{ .quantity = 75, .unit = .g },
+        },
+        .{
+            .ingredient = "sesame oil",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "cm of ginger",
+            .amount = .{ .quantity = 2.5 },
+            .note = "grated",
+        },
+        .{
+            .ingredient = "cloves of garlic",
+            .amount = .{ .quantity = 2 },
+            .note = "crushed",
+        },
+        .{
+            .ingredient = "spring greens",
+            .amount = .{ .quantity = 100, .unit = .g },
+            .note = "thickly sliced",
+        },
+        .{
+            .ingredient = "red chilli for dressing",
+            .amount = .{ .quantity = 1 },
+            .note = "finely chopped",
+        },
+        .{
+            .ingredient = "cm of ginger for dressing",
+            .amount = .{ .quantity = 2 },
+            .note = "grated",
+        },
+        .{
+            .ingredient = "cloves of garlic for dressing",
+            .amount = .{ .quantity = 2 },
+            .note = "grated",
+        },
+        .{
+            .ingredient = "limes for dressing",
+            .amount = .{ .quantity = 2 },
+            .note = "zest of 1 and juice of both",
+        },
+        .{
+            .ingredient = "soy sauce",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "sesame oil for dressing",
+            .amount = .{ .quantity = 2, .unit = .tbsp },
+        },
+        .{
+            .ingredient = "spring onions",
+            .amount = .{ .quantity = 3 },
+            .note = "thinly sliced",
+        },
+        .{
+            .ingredient = "sesame seeds",
+            .amount = .{ .quantity = 30, .unit = .g },
+            .note = "to serve",
+        },
+        .{
+            .ingredient = "white rice",
+            .note = "to serve, see page 17",
+        },
+    },
+    .instructions = .{
+        \\Preheat the oven to 180C fan/200C/gas 6. Cut deep cross-hatches into each aubergine half,
+        \\then transfer to a roasting tin along with the tofu.
+        ,
+        \\Mix the miso paste with the sesame oil, ginger and garlic, then rub this into everything
+        \\in the roasting tin. Transfer to the oven and roast for 25 minutes. Then, rub the spring
+        \\greens with 1 tablespoon of sesame oil, add them to the tin and cook for a further 20
+        \\minutes.
+        ,
+        \\Meanwhile, mix the chilli, ginger, garlic, soy sauce, sesame oil, lime zest and juice, and
+        \\spring onions together. Tip this dressing over the aubergine and tofu as soon as it comes
+        \\out of the oven, then scatter with the sesame seeds. Serve hot with rice alongside.
+        ,
+    },
+}
